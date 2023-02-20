@@ -1,7 +1,6 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "concurrently \"tsc -w\" \"nodemon dist/server.js\""
@@ -28,5 +27,6 @@
     "concurrently": "^7.6.0",
     "cors": "^2.8.5",
     "nodemon": "^2.0.20"
-  }
+  },
+  "description": ""
 }
