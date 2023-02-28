@@ -33,7 +33,7 @@ const https_1 = __importDefault(require("https"));
 class Server {
     constructor() {
         this.config = () => {
-            this.backend.set('port', 8080);
+            this.backend.set('port', 80);
             this.backend.use((0, express_1.urlencoded)({ extended: true }));
             this.backend.use((0, express_1.json)());
             this.backend.use((0, cors_1.default)());

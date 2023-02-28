@@ -19,7 +19,7 @@ class Server {
     }
 
     public config = (): void => {
-        this.backend.set('port', 8080);
+        this.backend.set('port', 80);
         this.backend.use(urlencoded({extended: true}));
         this.backend.use(json());
         this.backend.use(cors());
