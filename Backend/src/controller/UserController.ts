@@ -44,7 +44,9 @@ class UserController {
                 if(!verified) {
                     return res.json({error: true, message: "Contraseña Incorrecta!"});
                 }
-                const token = jwt.sign({email: email}, process.env.key as string);   
+                
+                const token = jwt.sign({email: email}, process.env.key as string, {expiresIn:'2592000000'});
+
                 return res.json({error: false, message: "Ok", token: token});
 
             } else {

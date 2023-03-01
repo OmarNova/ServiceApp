@@ -77,7 +77,7 @@ class UserController {
                     if (!verified) {
                         return res.json({ error: true, message: "Contraseña Incorrecta!" });
                     }
-                    const token = jsonwebtoken_1.default.sign({ email: email }, process.env.key);
+                    const token = jsonwebtoken_1.default.sign({ email: email }, process.env.key, { expiresIn: '2592000000' });
                     return res.json({ error: false, message: "Ok", token: token });
                 }
                 else {
