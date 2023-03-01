@@ -29,7 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('ServicesApp'),
+        backgroundColor: Color.fromRGBO(255, 153, 0, 1),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
