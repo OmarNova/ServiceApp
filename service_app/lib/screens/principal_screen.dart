@@ -7,6 +7,7 @@ class Principal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255, 153, 0, 1),
         title: Text('Mi aplicación'),
       ),
       body: Center(
@@ -20,6 +21,9 @@ class Principal extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
               },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromRGBO(255, 153, 0, 1))),
               child: Text('Iniciar sesión'),
             ),
             ElevatedButton(
@@ -29,6 +33,9 @@ class Principal extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => RegisterScreen()),
                 );
               },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromRGBO(255, 153, 0, 1))),
               child: Text('Registrarse'),
             ),
           ],

@@ -83,6 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255, 153, 0, 1),
         title: Text('Register'),
       ),
       body: SingleChildScrollView(

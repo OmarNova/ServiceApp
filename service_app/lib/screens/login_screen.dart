@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:service_app/screens/home_screen.dart';
 import 'package:service_app/core/auth_services.dart';
 import 'package:service_app/screens/principal_screen.dart';
+import 'package:service_app/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -152,6 +153,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: _isLoading
                     ? const CircularProgressIndicator()
                     : const Text('Login'),
+              ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  );
+                },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(255, 153, 0, 1))),
+                child: Text('Register'),
               ),
             ],
           ),
