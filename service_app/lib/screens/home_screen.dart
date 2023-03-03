@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:service_app/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:service_app/screens/build_card.dart';
+import 'package:service_app/customwidgets/custom_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _token = '';
+  String _selectedRole = 'equisde';
 
   @override
   void initState() {
@@ -28,23 +31,39 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ServicesApp'),
-        backgroundColor: Color.fromRGBO(255, 153, 0, 1),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await _logout(context);
-              await _deleteToken(context);
-              _loadToken();
-            },
+      appBar: CustomAppBar(
+        onLogoutPressed: () async {
+          await _logout(context);
+          await _deleteToken(context);
+          _loadToken();
+        },
+        onRoute1Pressed: () {
+          // handle route 1 press
+        },
+        onRoute2Pressed: () {
+          // handle route 2 press
+        },
+      ),
+      body: Column(
+        children: [
+          Container(
+            height: 50, // Altura del espacio en la parte superior
+            //aca puede ir un widget
+          ),
+          Expanded(
+            child: ListView(
+              children: [
+                CardItem(
+                  imageUrl:
+                      'https://cdn-icons-png.flaticon.com/512/4140/4140048.png',
+                  name: 'Jossyr',
+                  role: 'equisde',
+                  description: 'cositas',
+                ),
+              ],
+            ),
           ),
         ],
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: Text('Token: $_token'),
       ),
     );
   }

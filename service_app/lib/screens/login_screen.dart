@@ -1,14 +1,15 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:service_app/screens/home_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:service_app/core/auth_services.dart';
+import 'package:service_app/screens/principal_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<StatefulWidget> createState() {
+    return _LoginScreenState();
+  }
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -16,69 +17,34 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
-  late SharedPreferences _prefs;
+  late AuthService _authService;
 
   @override
   void initState() {
     super.initState();
-    _getToken();
+    _authService = AuthService();
   }
 
-  Future<void> _getToken() async {
-    _prefs = await SharedPreferences.getInstance();
-  }
-
-  Future<void> _login() async {
+  void _login() {
     setState(() {
       _isLoading = true;
     });
 
     final email = _emailController.text.trim();
     final passwd = _passwordController.text.trim();
-    final url = Uri.parse(
-        'http://100.25.20.233:8080/api/user/login'); // Reemplaza con la URL correcta
 
-    final response = await http.post(
-      url,
-      body: json.encode({'email': email, 'passwd': passwd}),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data != null && data['token'] != null) {
-        final token = data['token'];
-        await _prefs.setString('token', token);
-        print('Token: $token');
-
-        // ignore: use_build_context_synchronously
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Inicio de sesión exitoso'),
-              content: const Text('Tus credenciales son correctas'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
-                    );
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } else {
+    try {
+      _authService.login(email: email, passwd: passwd).then((value) {
+        if (!value['error']) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } else {
+          print(value['message']);
+        }
+      });
+    } catch (e) {
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
@@ -89,13 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
               margin: EdgeInsets.only(bottom: screenHeight * 0.3),
               child: AlertDialog(
                 title: const Text('Error'),
-                content: Text(json.decode(response.body)['message']),
+                content: Text(e.toString()),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('OK'),
+                    child: const Text('OK'),
                   ),
                 ],
               ),
@@ -104,6 +70,10 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       );
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -173,13 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: _isLoading
                     ? null
-                    : () async {
-                        await _login();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
-                        );
+                    : () {
+                        _login();
                       },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
