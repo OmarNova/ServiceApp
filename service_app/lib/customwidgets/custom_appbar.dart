@@ -107,7 +107,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
           value: 'Logout',
           child: ListTile(
             leading: Icon(Icons.logout, color: Color.fromRGBO(255, 153, 0, 1)),
-            title: Text('Logout'),
+            title: Text('Cerrar sesión'),
           ),
         ),
       ],
