@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:service_app/screens/login_screen.dart';
-import 'package:service_app/screens/map.dart';
 import 'package:service_app/screens/micuenta.dart';
 import 'package:service_app/screens/socio.dart';
 import 'package:service_app/screens/solicitud.dart';
@@ -9,7 +8,6 @@ import 'package:service_app/screens/build_card.dart';
 import 'package:service_app/customwidgets/custom_appbar.dart';
 import 'package:service_app/screens/micuenta.dart';
 import 'package:service_app/customwidgets/cards.dart';
-import 'package:service_app/screens/map.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -55,8 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(builder: (context) => SolicitudScreen()));
         },
         onRoute2Pressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MapScreen()));
+          // handle route 2 press
         },
         onSocioPressed: () {
           Navigator.push(
