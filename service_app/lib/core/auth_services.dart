@@ -13,7 +13,7 @@ class AuthService {
 
   Future<Map<String, dynamic>> login(
       {required String email, required String passwd}) async {
-    final url = Uri.parse('$baseUrl/user/login'); //$baseUrl/users/login
+    final url = Uri.parse('$baseUrl/empleador/login'); //$baseUrl/users/login
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -56,7 +56,7 @@ class AuthService {
       'telefono': telefono
     };
 
-    var res = await http.post(Uri.parse('$baseUrl/user/register'),
+    var res = await http.post(Uri.parse('$baseUrl/empleador/register'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: jsonEncode(body));
 
@@ -64,6 +64,31 @@ class AuthService {
       return jsonDecode(res.body);
     } else {
       print("Hay error. Llamar al +57 317-285-6951");
+      throw Exception('Failed to authenticate');
+    }
+  }
+
+  Future<Map<String, dynamic>> registerSocio(
+    String email,
+    String trabajo,
+    String descripcion,
+    String categoria,
+  ) async {
+    final body = {
+      'email': email,
+      'trabajo': trabajo,
+      'descripcion': descripcion,
+      'categoria': categoria,
+    };
+
+    var res = await http.post(Uri.parse('$baseUrl/trabajador/register'),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: jsonEncode(body));
+
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    } else {
+      print('Error al registrarse');
       throw Exception('Failed to authenticate');
     }
   }

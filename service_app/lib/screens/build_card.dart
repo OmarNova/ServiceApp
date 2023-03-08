@@ -11,6 +11,7 @@ class CardItem extends StatefulWidget {
     required this.name,
     required this.role,
     required this.description,
+    required int rating,
   });
 
   @override

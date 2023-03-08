@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:service_app/screens/login_screen.dart';
+import 'package:service_app/screens/micuenta.dart';
+import 'package:service_app/screens/socio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:service_app/screens/build_card.dart';
 import 'package:service_app/customwidgets/custom_appbar.dart';
+import 'package:service_app/screens/micuenta.dart';
+import 'package:service_app/customwidgets/cards.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -32,16 +36,31 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        onLogoutPressed: () async {
-          await _logout(context);
-          await _deleteToken(context);
-          _loadToken();
+        onMiCuentaPressed: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MiCuentaScreen(
+                        nombreUsuario: 'Juan Pérez',
+                        correo: 'Juanperez@gmail.com',
+                        fotoPerfil:
+                            'https://cdn-icons-png.flaticon.com/512/3001/3001758.png',
+                      )));
         },
         onRoute1Pressed: () {
           // handle route 1 press
         },
         onRoute2Pressed: () {
           // handle route 2 press
+        },
+        onSocioPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SocioScreen()));
+        },
+        onLogoutPressed: () async {
+          await _logout(context);
+          await _deleteToken(context);
+          _loadToken();
         },
       ),
       body: Column(
@@ -53,13 +72,28 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: ListView(
               children: [
-                CardItem(
+                WorkerCard(
                   imageUrl:
-                      'https://cdn-icons-png.flaticon.com/512/4140/4140048.png',
-                  name: 'Jossyr',
-                  role: 'equisde',
-                  description: 'cositas',
+                      'https://cdn-icons-png.flaticon.com/512/3001/3001758.png',
+                  name: 'Juan Páez',
+                  description: 'Electricista',
+                  rating: 4,
                 ),
+                WorkerCard(
+                  imageUrl:
+                      'https://cdn-icons-png.flaticon.com/512/3048/3048122.png',
+                  name: 'Omar Nova',
+                  description: 'Plomero',
+                  rating: 3,
+                ),
+                WorkerCard(
+                  imageUrl:
+                      'https://cdn-icons-png.flaticon.com/512/3001/3001785.png',
+                  name: 'Mario Hurtado',
+                  description: 'Constructor',
+                  rating: 1,
+                ),
+                // Agrega más instancias de WorkerCard aquí
               ],
             ),
           ),
