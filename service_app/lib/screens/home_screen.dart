@@ -9,8 +9,6 @@ import 'package:service_app/customwidgets/custom_appbar.dart';
 import 'package:service_app/screens/micuenta.dart';
 import 'package:service_app/customwidgets/cards.dart';
 
-import 'mapa.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -55,8 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(builder: (context) => SolicitudScreen()));
         },
         onRoute2Pressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FindFriends()));
+          // handle route 2 press
         },
         onSocioPressed: () {
           Navigator.push(
@@ -96,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'https://cdn-icons-png.flaticon.com/512/3001/3001785.png',
                   name: 'Mario Hurtado',
                   description: 'Constructor',
-                  rating: 3,
+                  rating: 1,
                 ),
                 // Agrega más instancias de WorkerCard aquí
               ],
