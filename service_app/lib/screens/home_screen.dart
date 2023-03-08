@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:service_app/screens/login_screen.dart';
 import 'package:service_app/screens/micuenta.dart';
 import 'package:service_app/screens/socio.dart';
+import 'package:service_app/screens/solicitud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:service_app/screens/build_card.dart';
 import 'package:service_app/customwidgets/custom_appbar.dart';
@@ -48,7 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       )));
         },
         onRoute1Pressed: () {
-          // handle route 1 press
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => SolicitudScreen()));
         },
         onRoute2Pressed: () {
           // handle route 2 press
