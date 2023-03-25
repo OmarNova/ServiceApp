@@ -7,6 +7,7 @@ npm i bcrypt
 npm i jsonwebtoken
 npm i dotenv
 npm i multer
+npm i cors
 
 
 npm i nodemon -D

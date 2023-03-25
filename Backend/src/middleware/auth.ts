@@ -8,7 +8,12 @@ export default async function verifyToken (req: Request, res: Response, next: Ne
     if(!token){
         return res.status(403).json({error: true, message: "No Token Provided"});
     }
-    const decoded = JSON.parse(JSON.stringify(jwt.verify(token,process.env.key as string)));
-    req.body.email = decoded.email;
-    next();
+
+    jwt.verify(token,process.env.key as string, function(err, decoded) {
+        if (err) { return res.status(403).json({error: true, message: err.message});}
+        const t = JSON.parse(JSON.stringify(decoded))
+        req.body.email = t;
+        next();
+      });
+
 }
