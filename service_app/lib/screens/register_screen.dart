@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:service_app/core/auth_services.dart';
 import 'package:service_app/screens/home_screen.dart';
-import 'package:service_app/screens/principal_screen.dart';
+import 'package:service_app/screens/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (!value['error']) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => Principal()),
+            MaterialPageRoute(builder: (context) => LoginScreen()),
           );
         } else {
           print(value['message']);
