@@ -4,6 +4,9 @@
         android:label="service_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCKOstB05ht1Dnrr0yhUNVAeAhz4C6fU7A" /> <!-- Reemplaza "YOUR_API_KEY" con tu propia clave de la API de Google Maps -->
         <activity
             android:name=".MainActivity"
             android:exported="true"

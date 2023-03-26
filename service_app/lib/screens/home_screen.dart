@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:service_app/screens/find_friends.dart';
 import 'package:service_app/screens/login_screen.dart';
 import 'package:service_app/screens/micuenta.dart';
 import 'package:service_app/screens/socio.dart';
@@ -53,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(builder: (context) => SolicitudScreen()));
         },
         onRoute2Pressed: () {
-          // handle route 2 press
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FindFriends()));
         },
         onSocioPressed: () {
           Navigator.push(
