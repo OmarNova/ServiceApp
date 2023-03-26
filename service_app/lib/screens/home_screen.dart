@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'https://cdn-icons-png.flaticon.com/512/3001/3001785.png',
                   name: 'Mario Hurtado',
                   description: 'Constructor',
-                  rating: 1,
+                  rating: 3,
                 ),
                 // Agrega más instancias de WorkerCard aquí
               ],
