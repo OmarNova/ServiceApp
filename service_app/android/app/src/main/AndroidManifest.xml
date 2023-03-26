@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.service_app">
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
    <application
         android:label="service_app"
         android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
+        
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCKOstB05ht1Dnrr0yhUNVAeAhz4C6fU7A" /> <!-- Reemplaza "YOUR_API_KEY" con tu propia clave de la API de Google Maps -->
