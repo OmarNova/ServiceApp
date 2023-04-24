@@ -54,8 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(builder: (context) => SolicitudScreen()));
         },
         onRoute2Pressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FindFriends()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => FindFriends()));
         },
         onSocioPressed: () {
           Navigator.push(
@@ -74,32 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //aca puede ir un widget
           ),
           Expanded(
-            child: ListView(
-              children: [
-                WorkerCard(
-                  imageUrl:
-                      'https://cdn-icons-png.flaticon.com/512/3001/3001758.png',
-                  name: 'Juan Páez',
-                  description: 'Electricista',
-                  rating: 4,
-                ),
-                WorkerCard(
-                  imageUrl:
-                      'https://cdn-icons-png.flaticon.com/512/3048/3048122.png',
-                  name: 'Omar Nova',
-                  description: 'Plomero',
-                  rating: 3,
-                ),
-                WorkerCard(
-                  imageUrl:
-                      'https://cdn-icons-png.flaticon.com/512/3001/3001785.png',
-                  name: 'Mario Hurtado',
-                  description: 'Constructor',
-                  rating: 3,
-                ),
-                // Agrega más instancias de WorkerCard aquí
-              ],
-            ),
+            child: WorkerCardList(), // Reemplaza el ListView aquí
           ),
         ],
       ),
