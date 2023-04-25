@@ -73,7 +73,7 @@ class UserController {
                     return { error: true, message: 'error database' };
                 }
                 if (rows.length != 0) {
-                    this.model.getCategoriasTrabajos(categoria, (err, row) => {
+                    this.model.getIdCategoriasTrabajos(categoria, (err, row) => {
                         if (err) {
                             console.error(err);
                             return { error: true, message: 'error database' };
@@ -104,7 +104,7 @@ class UserController {
                     if (!verified) {
                         return res.json({ error: true, message: "Contraseña Incorrecta!" });
                     }
-                    const token = jsonwebtoken_1.default.sign({ email: email }, process.env.key);
+                    const token = jsonwebtoken_1.default.sign({ email: email }, process.env.key, { expiresIn: 604800000 });
                     return res.json({ error: false, message: "Ok", token: token });
                 }
                 else {
@@ -121,17 +121,106 @@ class UserController {
                 return res.json({ error: false, message: "Ok", solicitudes: rows });
             });
         });
+        this.getCategorias = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            this.model.getCategorias((error, rows) => {
+                let categorias = [];
+                if (error) {
+                    console.error(error);
+                    return { error: true, message: 'error database' };
+                }
+                for (let index = 0; index < rows.length; index++) {
+                    categorias.push(rows[index]['nombres']);
+                }
+                return res.json({ error: false, message: "Ok", categorias: categorias });
+            });
+        });
         this.enviarSolicitudEmpleador = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { email, titulo, descripcion } = req.body;
-            this.model.getEmpleador(email, (error, rows) => {
+            const { email, titulo, descripcion, categoria } = req.body;
+            this.model.getEmpleador(email.email, (error, rows) => {
                 if (error) {
                     console.error(error);
                     return res.status(405).json({ error: true, message: 'error database' });
                 }
                 if (rows.length != 0) {
-                    this.model.postSolicitudEmpleador(rows[0].idempleador, titulo, descripcion, (err, row) => {
-                        if (error) {
-                            console.error(error);
+                    this.model.getIdCategoriasTrabajos(categoria, (err, row) => {
+                        this.model.postSolicitudEmpleador(rows[0].idempleador, titulo, descripcion, row[0].idcategorias, (err, row) => {
+                            if (err) {
+                                console.error(err);
+                                return { error: true, message: 'error database' };
+                            }
+                            return res.json({ error: false, message: "Ok" });
+                        });
+                    });
+                }
+                else {
+                    return res.status(410).json({ error: true, message: 'User not Found' });
+                }
+            });
+        });
+        this.getSolicitudesPorCategoria = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { categoria } = req.params;
+            this.model.getSolicitudesPorCategoria(categoria, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return { error: true, message: 'error database' };
+                }
+                return res.json({ error: false, message: "Ok", solicitudes: rows });
+            });
+        });
+        this.getSolicitudesPostulantes = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.body;
+            let idSolicitud = parseInt(req.params['idSolicitud']);
+            if (!Number.isNaN(idSolicitud)) {
+                this.model.getEmpleador(email.email, (error, rows) => {
+                    if (error) {
+                        console.error(error);
+                        return res.status(405).json({ error: true, message: 'error database' });
+                    }
+                    if (rows.length != 0) {
+                        this.model.verificarEmpleadorSolicitud(idSolicitud, (err, row) => {
+                            if (err) {
+                                console.error(err);
+                                return res.status(405).json({ error: true, message: 'error database' });
+                            }
+                            if (row.length != 0) {
+                                if (rows[0].idempleador == row[0].empleador_idempleador) {
+                                    this.model.getPostulantesSolicitud(idSolicitud, (e, r) => {
+                                        if (e) {
+                                            console.error(e);
+                                            return res.status(405).json({ error: true, message: 'error database' });
+                                        }
+                                        return res.json({ error: false, message: "Ok", postulantes: r });
+                                    });
+                                }
+                                else {
+                                    return res.json({ error: true, message: "Autorización Fallida" });
+                                }
+                            }
+                            else {
+                                return res.json({ error: true, message: "No hay solicitud con ese ID" });
+                            }
+                        });
+                    }
+                    else {
+                        return res.json({ error: true, message: "Usuario no encontrado" });
+                    }
+                });
+            }
+            else {
+                return res.json({ error: true, message: "Id error" });
+            }
+        });
+        this.solicitudTrabajadorPostularse = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { email, idSolicitud } = req.body;
+            this.model.getTrabajador(email.email, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(405).json({ error: true, message: 'error database' });
+                }
+                if (rows.length != 0) {
+                    this.model.postSolicitudTrabajadorPostularse(idSolicitud, rows[0].idtrabajador, (err, row) => {
+                        if (err) {
+                            console.error(err);
                             return { error: true, message: 'error database' };
                         }
                         return res.json({ error: false, message: "Ok" });
@@ -139,6 +228,83 @@ class UserController {
                 }
                 else {
                     return res.status(410).json({ error: true, message: 'User not Found' });
+                }
+            });
+        });
+        this.getTrabajadores = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            this.model.getTrabajadores((error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return { error: true, message: 'error database' };
+                }
+                return res.json({ error: false, message: "Ok", trabajadores: rows });
+            });
+        });
+        this.getTrabajadoresPorCategoria = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { categoria } = req.params;
+            this.model.getTrabajadoresPorCategoria(categoria, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return { error: true, message: 'error database' };
+                }
+                return res.json({ error: false, message: "Ok", trabajadores: rows });
+            });
+        });
+        this.AceptarTrabajador = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { email, idSolicitud, idTrabajador } = req.body;
+            this.model.getEmpleador(email.email, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(405).json({ error: true, message: 'error database' });
+                }
+                if (rows.length != 0) {
+                    this.model.verificarEmpleadorSolicitud(idSolicitud, (err, row) => {
+                        if (err) {
+                            console.error(err);
+                            return res.status(405).json({ error: true, message: 'error database' });
+                        }
+                        if (row.length != 0) {
+                            if (rows[0].idempleador == row[0].empleador_idempleador) {
+                                this.model.AceptarTrabajador(idTrabajador, idSolicitud, (error, rows) => {
+                                    if (error) {
+                                        console.error(error);
+                                        return { error: true, message: 'error database' };
+                                    }
+                                    return res.json({ error: false, message: "Ok" });
+                                });
+                            }
+                            else {
+                                return res.json({ error: true, message: "Autorización Fallida" });
+                            }
+                        }
+                        else {
+                            return res.json({ error: true, message: "No hay solicitud con ese ID" });
+                        }
+                    });
+                }
+                else {
+                    return res.json({ error: true, message: "Usuario no encontrado" });
+                }
+            });
+        });
+        this.getMisSolicitudes = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.body;
+            this.model.getEmpleador(email.email, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(405).json({ error: true, message: 'error database' });
+                }
+                if (rows.length != 0) {
+                    this.model.getMisSolicitudesEmpleador(rows[0].idempleador, (err, row) => {
+                        if (err) {
+                            console.error(err);
+                            return res.status(405).json({ error: true, message: 'error database' });
+                        }
+                        return res.json({ error: false, message: "Ok", solicitudes: row });
+                    });
+                }
+                else {
+                    return res.json({ error: true, message: "Usuario no encontrado" });
                 }
             });
         });
