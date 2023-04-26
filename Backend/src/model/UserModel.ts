@@ -1,5 +1,5 @@
 import MysqlDBC from "../db/myslq/MysqlDBC";
-
+import {v4 as uuidv4} from 'uuid';
 import { json } from "express";
 
 export default class UserModel {
@@ -10,10 +10,10 @@ export default class UserModel {
         this.mysqlDBC = new MysqlDBC();
     }
     
-    public InsertEmpleador = async (nombre: string, apellidos: string, email: string, telefono: string ,passwd: string, fn: Function) => {
+    public InsertEmpleador = async (nombre: string, apellidos: string, email: string, telefono: string ,passwd: string, direccion: string, fn: Function) => {
         this.mysqlDBC.connection();
 
-        const statement = `INSERT INTO empleador(nombres,apellidos,email,telefono,passwd) VALUES ('${nombre}', '${apellidos}','${email}','${telefono}','${passwd}');`;
+        const statement = `INSERT INTO empleador(uuid,nombres,apellidos,email,telefono,passwd,direccion) VALUES ('${uuidv4()}','${nombre}', '${apellidos}','${email}','${telefono}','${passwd}','${direccion}');`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
@@ -29,10 +29,10 @@ export default class UserModel {
        
     }
 
-    public InsertTrabajador = async (nombre: string, apellidos: string, email: string, telefono: string ,trabajo: string, descripcion: string, nombre_cat: number , fn: Function) => {
+    public InsertTrabajador = async (nombre: string, apellidos: string, email: string, telefono: string ,trabajo: string, descripcion: string, nombre_cat: number , direccion: string,fn: Function) => {
         this.mysqlDBC.connection();
 
-        const statement = `INSERT INTO trabajador(nombres,apellidos,email,telefono, trabajo, descripcion, categorias_idcategorias) VALUES ('${nombre}', '${apellidos}','${email}','${telefono}','${trabajo}','${descripcion}','${nombre_cat}');`;
+        const statement = `INSERT INTO trabajador(uuid,nombres,apellidos,email,telefono, trabajo, descripcion, categorias_idcategorias,direccion) VALUES ('${uuidv4()}','${nombre}', '${apellidos}','${email}','${telefono}','${trabajo}','${descripcion}','${nombre_cat}','${direccion}');`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
@@ -58,9 +58,9 @@ export default class UserModel {
     }
 
 
-    public postSolicitudEmpleador = async (id: number,titulo:string,descripcion:string, id_categorias: number, fn: Function) => {
+    public postSolicitudEmpleador = async (id: number,titulo:string,descripcion:string, id_categorias: number, direccion: string,fn: Function) => {
         this.mysqlDBC.connection();
-        const statement = `INSERT INTO solicitud(estado,titulo,descripcion,categorias_idcategorias,empleador_idempleador) VALUES ('Buscando','${titulo}','${descripcion}',${id_categorias},${id});`;
+        const statement = `INSERT INTO solicitud(uuid,estado,titulo,descripcion,categorias_idcategorias,empleador_idempleador,direccion) VALUES ('${uuidv4()}','Buscando','${titulo}','${descripcion}',${id_categorias},${id},'${direccion}');`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
@@ -88,7 +88,7 @@ export default class UserModel {
 
     public getSolicitudes = async (fn: Function) => {
         this.mysqlDBC.connection();
-        const statement = `SELECT idsolicitud,titulo, descripcion, nombres FROM solicitud, categorias WHERE trabajador_idtrabajador IS null AND estado='Buscando' AND categorias_idcategorias=idcategorias;`;
+        const statement = `SELECT uuid,idsolicitud,titulo, descripcion, nombres FROM solicitud, categorias WHERE trabajador_idtrabajador IS null AND estado='Buscando' AND categorias_idcategorias=idcategorias;`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
@@ -97,7 +97,7 @@ export default class UserModel {
 
     public getSolicitudesPorCategoria = async (categoria: string,fn: Function) => {
         this.mysqlDBC.connection();
-        const statement = `SELECT idsolicitud,titulo, descripcion, nombres FROM solicitud, categorias WHERE trabajador_idtrabajador IS null AND estado='Buscando' AND nombres='${categoria}';`;
+        const statement = `SELECT uuid,idsolicitud,titulo, descripcion, nombres FROM solicitud, categorias WHERE trabajador_idtrabajador IS null AND estado='Buscando' AND nombres='${categoria}';`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
@@ -107,7 +107,7 @@ export default class UserModel {
     //Obtener los postulantes para una solicitud
     public getPostulantesSolicitud = async (solicitud: number,fn: Function) => {
         this.mysqlDBC.connection();
-        const statement = `SELECT idtrabajador,nombres,apellidos,telefono,trabajo,descripcion FROM postulantes,trabajador WHERE solicitud_idsolicitud=${solicitud} AND trabajador_idtrabajador=idtrabajador;;`;
+        const statement = `SELECT uuid,idtrabajador,nombres,apellidos,telefono,trabajo,descripcion FROM postulantes,trabajador WHERE solicitud_idsolicitud=${solicitud} AND trabajador_idtrabajador=idtrabajador;;`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
@@ -126,7 +126,7 @@ export default class UserModel {
 
     public getTrabajadores = async (fn: Function) => {
         this.mysqlDBC.connection();
-        const statement = `SELECT A.nombres,apellidos,telefono,trabajo,descripcion,B.nombres AS categoria FROM trabajador AS A, categorias AS B WHERE categorias_idcategorias=idcategorias;`;
+        const statement = `SELECT uuid,A.nombres,apellidos,telefono,trabajo,descripcion,B.nombres AS categoria FROM trabajador AS A, categorias AS B WHERE categorias_idcategorias=idcategorias;`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
@@ -137,7 +137,7 @@ export default class UserModel {
     //Obtener trabajadores por categoria
     public getTrabajadoresPorCategoria = async (categoria: string,fn: Function) => {
         this.mysqlDBC.connection();
-        const statement = `SELECT A.nombres,apellidos,telefono,trabajo,descripcion,B.nombres AS categoria FROM trabajador AS A, categorias AS B WHERE B.nombres='${categoria}';`;
+        const statement = `SELECT uuid,A.nombres,apellidos,telefono,trabajo,descripcion,B.nombres AS categoria FROM trabajador AS A, categorias AS B WHERE B.nombres='${categoria}';`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
@@ -160,14 +160,32 @@ export default class UserModel {
     public getMisSolicitudesEmpleador = async (idEmpleador: number,fn: Function) => {
         this.mysqlDBC.connection();
 
-        const statement = `SELECT idsolicitud, titulo, descripcion, nombres, estado FROM solicitud, categorias WHERE empleador_idempleador=${idEmpleador};`;
+        const statement = `SELECT uuid,idsolicitud, titulo, descripcion, nombres, estado FROM solicitud, categorias WHERE empleador_idempleador=${idEmpleador};`;
         this.mysqlDBC.pool.query(statement, (error: any, rows: any) => {
             fn(error, rows);
         }); 
        
     }
 
-    
+    public subirImagen = async (imagen: object,idempleador: number,fn: Function) => {
+        this.mysqlDBC.connection();
+        const values = [imagen,idempleador];
+        const statement = `UPDATE empleador SET image=? WHERE idempleador=?;`;
+        this.mysqlDBC.pool.query(statement, values, (error: any, rows: any) => {
+            fn(error, rows);
+        }); 
+       
+    }
+
+    public getImagen = async (idempleador: number,fn: Function) => {
+        this.mysqlDBC.connection();
+        const values = [idempleador];
+        const statement = `SELECT image FROM empleador WHERE idempleador=?;`;
+        this.mysqlDBC.pool.query(statement, values, (error: any, rows: any) => {
+            fn(error, rows);
+        }); 
+       
+    }
     
 
 }

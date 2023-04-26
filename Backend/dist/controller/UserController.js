@@ -42,9 +42,11 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 class UserController {
     constructor() {
-        this.index = (req, res) => res.json({ 'error': 0, 'msg': 'API: node-express-ts' });
+        this.index = (req, res) => {
+            res.json({ 'error': 0, 'msg': 'API: node-express-ts' });
+        };
         this.registerEmpleador = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { nombres, email, passwd, apellidos, telefono } = req.body;
+            const { nombres, email, passwd, apellidos, telefono, direccion } = req.body;
             const password_hash = bcrypt_1.default.hashSync(passwd, 10);
             this.model.getEmpleador(email, (error, rows) => {
                 if (error) {
@@ -52,7 +54,7 @@ class UserController {
                     return { error: true, message: 'error database' };
                 }
                 if (rows.length == 0) {
-                    this.model.InsertEmpleador(nombres, apellidos, email, telefono, password_hash, (error, rows) => {
+                    this.model.InsertEmpleador(nombres, apellidos, email, telefono, password_hash, direccion, (error, rows) => {
                         if (error) {
                             console.error(error);
                             return { error: true, message: 'error database' };
@@ -66,7 +68,7 @@ class UserController {
             });
         });
         this.registerTrabajador = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { email, trabajo, descripcion, categoria } = req.body;
+            const { email, trabajo, descripcion, categoria, direccion } = req.body;
             this.model.getEmpleador(email, (error, rows) => {
                 if (error) {
                     console.error(error);
@@ -78,7 +80,7 @@ class UserController {
                             console.error(err);
                             return { error: true, message: 'error database' };
                         }
-                        this.model.InsertTrabajador(rows[0].nombres, rows[0].apellidos, rows[0].email, rows[0].telefono, trabajo, descripcion, row[0].idcategorias, (e, respuesta) => {
+                        this.model.InsertTrabajador(rows[0].nombres, rows[0].apellidos, rows[0].email, rows[0].telefono, trabajo, descripcion, row[0].idcategorias, direccion, (e, respuesta) => {
                             if (e) {
                                 console.error(e);
                                 return { error: true, message: 'error database' };
@@ -135,7 +137,7 @@ class UserController {
             });
         });
         this.enviarSolicitudEmpleador = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { email, titulo, descripcion, categoria } = req.body;
+            const { email, titulo, descripcion, categoria, direccion } = req.body;
             this.model.getEmpleador(email.email, (error, rows) => {
                 if (error) {
                     console.error(error);
@@ -143,7 +145,7 @@ class UserController {
                 }
                 if (rows.length != 0) {
                     this.model.getIdCategoriasTrabajos(categoria, (err, row) => {
-                        this.model.postSolicitudEmpleador(rows[0].idempleador, titulo, descripcion, row[0].idcategorias, (err, row) => {
+                        this.model.postSolicitudEmpleador(rows[0].idempleador, titulo, descripcion, row[0].idcategorias, direccion, (err, row) => {
                             if (err) {
                                 console.error(err);
                                 return { error: true, message: 'error database' };
@@ -305,6 +307,53 @@ class UserController {
                 }
                 else {
                     return res.json({ error: true, message: "Usuario no encontrado" });
+                }
+            });
+        });
+        this.subirImagen = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { email, img } = req.body;
+            const binaryData = Buffer.from(img, 'base64');
+            this.model.getEmpleador(email.email, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(405).json({ error: true, message: 'error database' });
+                }
+                if (rows.length != 0) {
+                    this.model.subirImagen(binaryData, rows[0].idempleador, (err, row) => {
+                        if (err) {
+                            console.error(err);
+                            return { error: true, message: 'error database' };
+                        }
+                        return res.json({ error: false, message: "Ok" });
+                    });
+                }
+                else {
+                    return res.status(410).json({ error: true, message: 'User not Found' });
+                }
+            });
+        });
+        this.getImagen = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.body;
+            this.model.getEmpleador(email.email, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(405).json({ error: true, message: 'error database' });
+                }
+                console.log(rows);
+                if (rows.length != 0) {
+                    this.model.getImagen(rows[0].idempleador, (err, row) => {
+                        console.log(row[0].image);
+                        if (row[0].image) {
+                            res.write(row[0].image, 'binary');
+                            res.end(null, 'binary');
+                        }
+                        else {
+                            return res.status(401).json({ error: true, message: 'Not image' });
+                        }
+                    });
+                }
+                else {
+                    return res.status(410).json({ error: true, message: 'User not Found' });
                 }
             });
         });

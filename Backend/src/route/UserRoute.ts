@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserController from "../controller/UserController"
 import auth from "../middleware/auth";
+import auth_imagen from "../middleware/auth_image";
 import ApiDocument from "../controller/ApiDocumentController"
 import multer from "../middleware/multer";
 
@@ -26,6 +27,8 @@ class UserRoute {
         this.router.put('/empleador/aceptarTrabajador',auth,this.UserController.AceptarTrabajador);
         this.router.get('/empleador/propuestas/:idSolicitud',auth,this.UserController.getSolicitudesPostulantes);
         this.router.get('/empleador/solicitudes', auth,this.UserController.getMisSolicitudes);
+        this.router.post('/empleador/imagen/perfil', auth,this.UserController.subirImagen);
+        this.router.get('/empleador/imagen/perfil', auth_imagen,this.UserController.getImagen);
         //this.router.post('/empleador/solicitud/terminada', auth,this.UserController.getMisSolicitudes);
 
         this.router.post('/trabajador/register',this.UserController.registerTrabajador);

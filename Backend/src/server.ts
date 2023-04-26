@@ -4,6 +4,7 @@ import AdminRoute from "./route/AdminRoute";
 import cors from 'cors';
 import https from 'https';
 
+
 class Server {
 
     private backend: Application;
@@ -49,5 +50,6 @@ class Server {
     }
 
 }
+
 
 const server = new Server();

@@ -15,15 +15,16 @@ class UserController {
         this.model = new UserModel();
     }
 
-    public index = (req: Request, res: Response) => res.json({ 'error': 0, 'msg': 'API: node-express-ts' });
+    public index = (req: Request, res: Response) =>{ 
+        res.json({ 'error': 0, 'msg': 'API: node-express-ts' })};
 
     public registerEmpleador = async (req: Request, res: Response) => {
-        const { nombres, email, passwd, apellidos, telefono } = req.body;
+        const { nombres, email, passwd, apellidos, telefono, direccion } = req.body;
         const password_hash=bcrypt.hashSync(passwd, 10);
         this.model.getEmpleador(email, (error: any, rows: any) => {
             if (error) {console.error(error);return { error: true, message: 'error database' };}   
             if (rows.length == 0) {
-                this.model.InsertEmpleador(nombres,apellidos,email,telefono,password_hash, (error: any, rows: any) => {
+                this.model.InsertEmpleador(nombres,apellidos,email,telefono,password_hash,direccion, (error: any, rows: any) => {
                     if (error) {console.error(error);return { error: true, message: 'error database' };}
                     return res.json({ error: false, message: "Ok"});
                 });
@@ -34,7 +35,7 @@ class UserController {
     }
 
     public registerTrabajador = async (req: Request, res: Response) => {
-        const { email, trabajo, descripcion, categoria } = req.body;
+        const { email, trabajo, descripcion, categoria , direccion } = req.body;
 
         this.model.getEmpleador(email, (error: any, rows: any) => {
             if (error) {console.error(error);return { error: true, message: 'error database' };}  
@@ -44,7 +45,7 @@ class UserController {
                 this.model.getIdCategoriasTrabajos(categoria, (err: any, row: any) => {
                     if (err) {console.error(err);return { error: true, message: 'error database' };}
 
-                    this.model.InsertTrabajador(rows[0].nombres,rows[0].apellidos,rows[0].email, rows[0].telefono,trabajo, descripcion, row[0].idcategorias, (e: any, respuesta: any) => {
+                    this.model.InsertTrabajador(rows[0].nombres,rows[0].apellidos,rows[0].email, rows[0].telefono,trabajo, descripcion, row[0].idcategorias, direccion,(e: any, respuesta: any) => {
                         if (e) {console.error(e);return { error: true, message: 'error database' };}   
                         return res.json({ error: false, message: "Ok"});
                     });
@@ -104,7 +105,7 @@ class UserController {
     }
 
     public enviarSolicitudEmpleador = async (req: Request, res: Response) => {
-        const { email, titulo, descripcion, categoria  } = req.body;
+        const { email, titulo, descripcion, categoria ,direccion } = req.body;
         
         this.model.getEmpleador(email.email, (error: any, rows: any) => {
             if (error) {console.error(error);return res.status(405).json({ error: true, message: 'error database' });}   
@@ -112,7 +113,7 @@ class UserController {
             if (rows.length != 0) {
 
                 this.model.getIdCategoriasTrabajos(categoria,(err: any, row: any)=> {
-                    this.model.postSolicitudEmpleador(rows[0].idempleador,titulo,descripcion,row[0].idcategorias,(err:any,row:any) => {
+                    this.model.postSolicitudEmpleador(rows[0].idempleador,titulo,descripcion,row[0].idcategorias,direccion,(err:any,row:any) => {
                         if (err) {console.error(err);return { error: true, message: 'error database' };}
                        
                         return res.json({error: false, message: "Ok"});
@@ -265,6 +266,52 @@ class UserController {
                 });
             } else{
                 return res.json({error: true, message: "Usuario no encontrado"}); 
+            }
+        });
+    }
+
+    public subirImagen = async (req: Request, res: Response) => {
+        const { email, img } = req.body;
+        const binaryData = Buffer.from(img, 'base64');
+
+        this.model.getEmpleador(email.email, (error: any, rows: any) => {
+            if (error) {console.error(error);return res.status(405).json({ error: true, message: 'error database' });}   
+        
+            if (rows.length != 0) {
+
+                this.model.subirImagen(binaryData,rows[0].idempleador,(err:any,row:any)=>{
+                    if (err) {console.error(err);return { error: true, message: 'error database' };}
+                    return res.json({error: false,message: "Ok"});
+                });
+
+         
+            } else {
+                return res.status(410).json({ error: true, message: 'User not Found' });
+            }
+        });
+    }
+
+    public getImagen = async (req: Request, res: Response) => {
+        const { email } = req.body;
+       
+        this.model.getEmpleador(email.email, (error: any, rows: any) => {
+            if (error) {console.error(error);return res.status(405).json({ error: true, message: 'error database' });}   
+            console.log(rows);
+            if (rows.length != 0) {
+
+                this.model.getImagen(rows[0].idempleador,(err:any,row:any)=>{
+                    console.log(row[0].image);
+                    if (row[0].image) {
+                        res.write(row[0].image,'binary');
+                        res.end(null, 'binary');
+                    } else{
+                        return res.status(401).json({ error: true, message: 'Not image' });
+                    }
+                });
+
+         
+            } else {
+                return res.status(410).json({ error: true, message: 'User not Found' });
             }
         });
     }

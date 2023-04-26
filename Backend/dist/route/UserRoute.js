@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const UserController_1 = __importDefault(require("../controller/UserController"));
 const auth_1 = __importDefault(require("../middleware/auth"));
+const auth_image_1 = __importDefault(require("../middleware/auth_image"));
 const ApiDocumentController_1 = __importDefault(require("../controller/ApiDocumentController"));
 class UserRoute {
     constructor() {
@@ -17,6 +18,8 @@ class UserRoute {
             this.router.put('/empleador/aceptarTrabajador', auth_1.default, this.UserController.AceptarTrabajador);
             this.router.get('/empleador/propuestas/:idSolicitud', auth_1.default, this.UserController.getSolicitudesPostulantes);
             this.router.get('/empleador/solicitudes', auth_1.default, this.UserController.getMisSolicitudes);
+            this.router.post('/empleador/imagen/perfil', auth_1.default, this.UserController.subirImagen);
+            this.router.get('/empleador/imagen/perfil', auth_image_1.default, this.UserController.getImagen);
             //this.router.post('/empleador/solicitud/terminada', auth,this.UserController.getMisSolicitudes);
             this.router.post('/trabajador/register', this.UserController.registerTrabajador);
             this.router.post('/trabajador/postularse', auth_1.default, this.UserController.solicitudTrabajadorPostularse);
