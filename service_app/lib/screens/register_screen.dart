@@ -83,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(255, 153, 0, 1),
+        backgroundColor: Color.fromRGBO(61, 38, 12, 1),
         title: Text('Register'),
       ),
       body: SingleChildScrollView(
@@ -97,65 +97,99 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: Icon(Icons.email),
+                      border: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                        borderRadius: BorderRadius.circular(8),
+                      )),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
                     return null;
                   },
-                  onSaved: (value) =>
-                      _emailController = value! as TextEditingController,
+                  onSaved: (value) => _emailController.text = value!,
                 ),
+                SizedBox(height: 20),
                 TextFormField(
                   obscureText: true,
                   controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: Icon(Icons.lock),
+                      border: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                        borderRadius: BorderRadius.circular(8),
+                      )),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
                     }
                     return null;
                   },
-                  onSaved: (value) =>
-                      _passwordController = value! as TextEditingController,
+                  onSaved: (value) => _passwordController.text = value!,
                 ),
+                SizedBox(height: 20),
                 TextFormField(
                   controller: _nombresController,
-                  decoration: InputDecoration(labelText: 'Nombres'),
+                  decoration: InputDecoration(
+                      labelText: 'Nombres',
+                      prefixIcon: Icon(Icons.person),
+                      border: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                        borderRadius: BorderRadius.circular(8),
+                      )),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your names';
                     }
                     return null;
                   },
-                  onSaved: (value) =>
-                      _nombresController = value! as TextEditingController,
+                  onSaved: (value) => _nombresController.text = value!,
                 ),
+                SizedBox(height: 20),
                 TextFormField(
                   controller: _apellidosController,
-                  decoration: InputDecoration(labelText: 'Apellidos'),
+                  decoration: InputDecoration(
+                      labelText: 'Apellidos',
+                      prefixIcon: Icon(Icons.person),
+                      border: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                        borderRadius: BorderRadius.circular(8),
+                      )),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your last names';
                     }
                     return null;
                   },
-                  onSaved: (value) =>
-                      _apellidosController = value! as TextEditingController,
+                  onSaved: (value) => _apellidosController.text = value!,
                 ),
+                SizedBox(height: 20),
                 TextFormField(
                   controller: _telefonoController,
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(labelText: 'Teléfono'),
+                  decoration: InputDecoration(
+                      labelText: 'Teléfono',
+                      prefixIcon: Icon(Icons.phone),
+                      border: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                        borderRadius: BorderRadius.circular(8),
+                      )),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your phone number';
                     }
                     return null;
                   },
-                  onSaved: (value) =>
-                      _telefonoController = value! as TextEditingController,
+                  onSaved: (value) => _telefonoController.text = value!,
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
@@ -165,8 +199,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           _submitForm();
                         },
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromRGBO(255, 153, 0, 1))),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromRGBO(61, 38, 12, 1),
+                    ),
+                  ),
                   child: _isLoading
                       ? const CircularProgressIndicator()
                       : Text('Register'),

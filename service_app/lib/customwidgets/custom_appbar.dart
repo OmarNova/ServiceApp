@@ -29,8 +29,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color.fromRGBO(255, 153, 0, 1),
-      title: const Text('ServicesApp'),
+      title: SizedBox(
+        height: 140.0, // aumentar el valor de height
+        width: 140.0, // aumentar el valor de width
+        child: Image.asset("assets/images/logo.png"),
+      ),
+      backgroundColor: Color.fromRGBO(61, 38, 12, 1),
       actions: [
         CustomDropdown(
           onMiCuentaPressed: widget.onMiCuentaPressed,
@@ -75,38 +79,50 @@ class _CustomDropdownState extends State<CustomDropdown> {
         const PopupMenuItem<String>(
           value: 'Mi Cuenta',
           child: ListTile(
-            leading: Icon(Icons.person, color: Color.fromRGBO(255, 153, 0, 1)),
+            leading: Icon(
+              Icons.person,
+              color: Color.fromRGBO(61, 38, 12, 1),
+            ),
             title: Text('Mi Cuenta'),
           ),
         ),
         const PopupMenuItem<String>(
           value: 'Route 1',
           child: ListTile(
-            leading:
-                Icon(Icons.room_service, color: Color.fromRGBO(255, 153, 0, 1)),
+            leading: Icon(
+              Icons.room_service,
+              color: Color.fromRGBO(61, 38, 12, 1),
+            ),
             title: Text('Hacer solicitud'),
           ),
         ),
         const PopupMenuItem<String>(
           value: 'Route 2',
           child: ListTile(
-            leading:
-                Icon(Icons.map_outlined, color: Color.fromRGBO(255, 153, 0, 1)),
+            leading: Icon(
+              Icons.map_outlined,
+              color: Color.fromRGBO(61, 38, 12, 1),
+            ),
             title: Text('Mapa'),
           ),
         ),
         const PopupMenuItem<String>(
           value: 'Registro Trabajador',
           child: ListTile(
-            leading:
-                Icon(Icons.person_add, color: Color.fromRGBO(255, 153, 0, 1)),
+            leading: Icon(
+              Icons.person_add,
+              color: Color.fromRGBO(61, 38, 12, 1),
+            ),
             title: Text('Registro Trabajador'),
           ),
         ),
         const PopupMenuItem<String>(
           value: 'Logout',
           child: ListTile(
-            leading: Icon(Icons.logout, color: Color.fromRGBO(255, 153, 0, 1)),
+            leading: Icon(
+              Icons.logout,
+              color: Color.fromRGBO(61, 38, 12, 1),
+            ),
             title: Text('Logout'),
           ),
         ),

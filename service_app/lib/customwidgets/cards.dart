@@ -4,14 +4,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class WorkerCard extends StatelessWidget {
-  //final String imageUrl;
   final String nombres;
   final String description;
   final String trabajo;
   final String categoria;
 
   const WorkerCard({
-    // required this.imageUrl,
     required this.nombres,
     required this.description,
     required this.trabajo,
@@ -21,7 +19,8 @@ class WorkerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -38,12 +37,11 @@ class WorkerCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            //   child: Image.network(
-            //     imageUrl,
-            //     width: 80,
-            //     height: 80,
-            //     fit: BoxFit.cover,
-            //  ),
+            child: Container(
+              width: 80,
+              height: 80,
+              color: Color.fromRGBO(61, 38, 12, 1),
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -62,11 +60,19 @@ class WorkerCard extends StatelessWidget {
                   trabajo,
                   style: const TextStyle(
                     fontSize: 16,
+                    color: Color.fromRGBO(61, 38, 12, 1),
                   ),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   description,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  categoria,
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -93,9 +99,6 @@ class WorkerCardList extends StatelessWidget {
             itemBuilder: (context, index) {
               final worker = workers[index];
               return WorkerCard(
-//                imageUrl: worker['imageUrl'] != null
-//                    ? worker['imageUrl'] as String
-//                    : '',
                 nombres: worker['nombres'] != null
                     ? worker['nombres'] as String
                     : '',

@@ -41,23 +41,23 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) => HomeScreen()),
           );
         } else {
-           showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Contraseña o email incorrectos.'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-            );
-             },
-             );
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error'),
+                content: const Text('Contraseña o email incorrectos.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         }
       });
     } catch (e) {
@@ -95,95 +95,130 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('LogIn'),
-        backgroundColor: Color.fromRGBO(255, 153, 0, 1),
+        title: SizedBox(
+          height: 140.0, // aumentar el valor de height
+          width: 140.0, // aumentar el valor de width
+          child: Image.asset("assets/images/logo.png"),
+        ),
+        backgroundColor: Color.fromRGBO(61, 38, 12, 1),
       ),
-      body: SingleChildScrollView(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            key: _formKey,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: 300,
-                child: Image.network(
-                    'https://cdn.vox-cdn.com/thumbor/IULs8cgukIn_-pIgMY9WFZsVOUk=/0x0:1280x800/1400x788/filters:focal(640x400:641x401)/cdn.vox-cdn.com/uploads/chorus_asset/file/19700731/googlemaps.png'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: 80,
+              child: Image.network(
+                'https://cdn.vox-cdn.com/thumbor/IULs8cgukIn_-pIgMY9WFZsVOUk=/0x0:1280x800/1400x788/filters:focal(640x400:641x401)/cdn.vox-cdn.com/uploads/chorus_asset/file/19700731/googlemaps.png',
+                fit: BoxFit.contain,
               ),
-              const Center(
-                child: Text('ServicesApp',
-                    style:
-                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Center(
-                child: Text(
-                  'Login',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            const Center(
+              child: Text(
+                'ServicesApp',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(61, 38, 12, 1),
                 ),
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'Email',
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : () {
-                        _login();
-                      },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(255, 153, 0, 1))),
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Login'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your email';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                ),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterScreen()),
-                  );
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(255, 153, 0, 1))),
-                child: Text('Register'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your password';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: _isLoading
+                  ? null
+                  : () {
+                      _login();
+                    },
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromRGBO(61, 38, 12, 1),
+                padding: const EdgeInsets.symmetric(vertical: 14),
               ),
-            ],
-          ),
+              child: _isLoading
+                  ? const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    )
+                  : const Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+            ),
+            const SizedBox(height: 15),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RegisterScreen(),
+                  ),
+                );
+              },
+              child: const Text(
+                'Create new account',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(61, 38, 12, 1),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
