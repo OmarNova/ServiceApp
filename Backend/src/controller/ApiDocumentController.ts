@@ -13,7 +13,7 @@ class ApiDocumentController {
     }
 
     public registerEmpleador =  (req: Request, res: Response) => {
-        const archivo = path.join(__dirname + "/../ApiDocument/index.html");
+        const archivo = path.join(__dirname + "/../View/index.html");
         return res.sendFile(archivo);
         //res.json({message:"ok"});
         

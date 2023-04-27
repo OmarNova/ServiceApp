@@ -8,6 +8,7 @@ npm i jsonwebtoken
 npm i dotenv
 npm i multer
 npm i cors
+npm i uuid
 
 
 npm i nodemon -D
@@ -20,5 +21,6 @@ npm i @types/bcrypt -D
 npm i @types/mysql -D
 npm i @types/cors -D
 npm i  @types/multer -D
+npm i @types/uuid -D
 
 

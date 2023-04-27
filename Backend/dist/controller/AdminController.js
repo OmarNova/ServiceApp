@@ -35,23 +35,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const AdminModel_1 = __importDefault(require("../model/AdminModel"));
+const path_1 = __importDefault(require("path"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-function verifyToken(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const token = req.headers['authorization'];
-        if (!token) {
-            return res.status(403).json({ error: true, message: "No Token Provided" });
-        }
-        jsonwebtoken_1.default.verify(token, process.env.key, function (err, decoded) {
-            if (err) {
-                return res.status(403).json({ error: true, message: err.message });
-            }
-            const t = JSON.parse(JSON.stringify(decoded));
-            req.body.email = t;
-            next();
+class UserController {
+    constructor() {
+        this.index = (req, res) => res.json({ 'error': 0, 'msg': 'API: node-express-ts' });
+        this.insertCategoria = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { nombre } = req.body;
+            this.model.InsertCategoriaTrabajo(nombre, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return { error: true, message: 'error database' };
+                }
+                return res.json({ error: false, message: 'Ok' });
+            });
         });
-    });
+        this.deleteCategoria = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { nombre } = req.params;
+            this.model.DeleteCategoriaTrabajo(nombre, (error, rows) => {
+                if (error) {
+                    console.error(error);
+                    return { error: true, message: 'error database' };
+                }
+                return res.json({ error: false, message: 'Ok' });
+            });
+        });
+        this.VistaAdmin = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const archivo = path_1.default.join(__dirname + "/../View/admin.html");
+            return res.sendFile(archivo);
+        });
+        this.model = new AdminModel_1.default();
+    }
 }
-exports.default = verifyToken;
+exports.default = UserController;

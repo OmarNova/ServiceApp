@@ -32,7 +32,7 @@ dotenv.config();
 class ApiDocumentController {
     constructor() {
         this.registerEmpleador = (req, res) => {
-            const archivo = path_1.default.join(__dirname + "/../ApiDocument/index.html");
+            const archivo = path_1.default.join(__dirname + "/../View/index.html");
             return res.sendFile(archivo);
             //res.json({message:"ok"});
         };

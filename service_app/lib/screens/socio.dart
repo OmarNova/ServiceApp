@@ -25,13 +25,6 @@ class _SocioScreenState extends State<SocioScreen> {
   //List<String> _categorias = ['Limpieza & Aseo', 'Plomería', 'Mantenimiento'];
   List<String> _categorias = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _loadToken();
-    _authService = AuthService();
-  }
-
   void _submitForm() {
     setState(() {
       _isLoading = true;
@@ -86,35 +79,8 @@ class _SocioScreenState extends State<SocioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        onMiCuentaPressed: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => MiCuentaScreen(
-                        nombreUsuario: 'Juan Pérez',
-                        correo: 'Juanperez@gmail.com',
-                        fotoPerfil:
-                            'https://cdn-icons-png.flaticon.com/512/3001/3001758.png',
-                      )));
-        },
-        onRoute1Pressed: () {
-          // handle route 1 press
-        },
-        onRoute2Pressed: () {
-          // handle route 2 press
-        },
-        onSocioPressed: () {
-          // handle route 2 press
-        },
-        onLogoutPressed: () async {
-          await _logout(context);
-          await _deleteToken(context);
-          _loadToken();
-        },
-      ),
-      body: Padding(
+    return MyMaterialApp(
+      Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -218,31 +184,7 @@ class _SocioScreenState extends State<SocioScreen> {
             ],
           ),
         ),
-      ),
+      )
     );
-  }
-
-  Future<void> _deleteToken(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    final deletedToken = prefs.getString('token');
-    print('Token eliminado: $deletedToken');
-  }
-
-  Future<void> _logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-      (route) => false,
-    );
-  }
-
-  Future<void> _loadToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _token = prefs.getString('token') ?? '';
-    });
   }
 }

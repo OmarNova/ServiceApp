@@ -40,7 +40,8 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 function verifyToken(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const token = req.headers['authorization'];
+        let token = req.query.token;
+        token = token === null || token === void 0 ? void 0 : token.toString();
         if (!token) {
             return res.status(403).json({ error: true, message: "No Token Provided" });
         }
