@@ -28,7 +28,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importStar(require("express"));
 const UserRoute_1 = __importDefault(require("./route/UserRoute"));
-const AdminRoute_1 = __importDefault(require("./route/AdminRoute"));
 const cors_1 = __importDefault(require("cors"));
 const https_1 = __importDefault(require("https"));
 class Server {
@@ -41,7 +40,6 @@ class Server {
         };
         this.route = () => {
             this.backend.use('/api', this.userRoute.router);
-            this.backend.use('/api/admin', this.adminRoute.router);
         };
         this.start = () => {
             this.backend.listen(this.backend.get('port'), () => {
@@ -51,7 +49,6 @@ class Server {
         this.https = https_1.default;
         this.backend = (0, express_1.default)();
         this.userRoute = new UserRoute_1.default();
-        this.adminRoute = new AdminRoute_1.default();
         this.config();
         this.route();
         this.start();

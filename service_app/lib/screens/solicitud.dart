@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
 class SolicitudScreen extends StatefulWidget {
   const SolicitudScreen({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
     });
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+Future<void> _selectDate(BuildContext context) async {
     FocusScope.of(context).requestFocus(FocusNode()); // Agregar esta línea
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -58,16 +58,16 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
     }
   }
 
-  void _enviarSolicitud() {
-    if (_formKey.currentState!.validate()) {
-      // Aquí podrías enviar la solicitud al servidor
-      // y mostrar un mensaje de éxito al usuario
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Solicitud enviada con éxito')),
-      );
-      Navigator.of(context).pop();
-    }
+void _enviarSolicitud() {
+  if (_formKey.currentState!.validate()) {
+    // Aquí podrías enviar la solicitud al servidor
+    // y mostrar un mensaje de éxito al usuario
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Solicitud enviada con éxito')),
+    );
+    Navigator.of(context).pop();
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +104,7 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
                 controller: _descripcionController,
                 decoration: InputDecoration(
                   hintText: 'Descripción del Servicio',
+                  
                 ),
                 onChanged: _onDescripcionChanged,
                 maxLines: 4,

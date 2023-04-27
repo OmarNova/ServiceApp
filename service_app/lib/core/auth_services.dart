@@ -92,31 +92,4 @@ class AuthService {
       throw Exception('Failed to authenticate');
     }
   }
-
-  Future<List<Map<String, dynamic>>> infoTrabajador() async {
-    try {
-      final response = await http.get(Uri.parse('$baseUrl/trabajadores'));
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        final List<dynamic> workers = data['trabajadores'];
-
-        return workers
-            .map((worker) => {
-                  'imageUrl': worker['imageUrl'],
-                  'nombres': worker['nombres'],
-                  'descripcion': worker['descripcion'],
-                  'trabajo': worker['trabajo'],
-                  'categoria': worker['categoria'],
-                  'rating': worker['rating'],
-                })
-            .toList();
-      } else {
-        throw Exception('Failed to fetch workers');
-      }
-    } catch (e) {
-      print(e);
-      throw Exception('Error fetching workers');
-    }
-  }
 }

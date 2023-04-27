@@ -44,14 +44,9 @@ function verifyToken(req, res, next) {
         if (!token) {
             return res.status(403).json({ error: true, message: "No Token Provided" });
         }
-        jsonwebtoken_1.default.verify(token, process.env.key, function (err, decoded) {
-            if (err) {
-                return res.status(403).json({ error: true, message: err.message });
-            }
-            const t = JSON.parse(JSON.stringify(decoded));
-            req.body.email = t;
-            next();
-        });
+        const decoded = JSON.parse(JSON.stringify(jsonwebtoken_1.default.verify(token, process.env.key)));
+        req.body.email = decoded.email;
+        next();
     });
 }
 exports.default = verifyToken;
