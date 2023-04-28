@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:service_app/core/auth_services.dart';
 
 class MiCuentaScreen extends StatelessWidget {
-  final String nombreUsuario;
-  final String correo;
-  final String fotoPerfil;
+  final String name;
+  final String email;
+  final String profileImageUrl;
 
   MiCuentaScreen({
-    required this.nombreUsuario,
-    required this.correo,
-    required this.fotoPerfil,
+    required this.name,
+    required this.email,
+    required this.profileImageUrl,
   });
 
-  @override
+@override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+       appBar: AppBar(
         backgroundColor: Color.fromRGBO(29, 29, 29, 1),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -31,128 +31,127 @@ class MiCuentaScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        color: Colors.white,
+      body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 10,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 153, 0, 1),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(32),
-                    bottomRight: Radius.circular(32),
+            Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(profileImageUrl),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(fotoPerfil),
-                          backgroundColor: Colors.white,
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                nombreUsuario,
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                correo,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.edit),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    email,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Divider(),
+                  SizedBox(height: 16),
+                  Text(
+                    'Información personal',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'Nombre',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Mi Cuenta',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(29, 29, 29, 1),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Información Personal',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          name,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Nombre Completo',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          'Correo electrónico',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      nombreUsuario,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[500],
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          email,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Divider(),
+                  SizedBox(height: 16),
+                  Text(
+                    'Cambiar contraseña',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Correo Electrónico',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      correo,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[500],
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Cambiar Contraseña',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -161,3 +160,7 @@ class MiCuentaScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+  

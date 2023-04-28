@@ -67,9 +67,9 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
               context,
               MaterialPageRoute(
                   builder: (context) => MiCuentaScreen(
-                        nombreUsuario: 'Juan Pérez',
-                        correo: 'Juanperez@gmail.com',
-                        fotoPerfil:
+                        name: 'Juan Pérez',
+                        email: 'Juanperez@gmail.com',
+                        profileImageUrl:
                             'https://cdn-icons-png.flaticon.com/512/3001/3001758.png',
                       )));
         },
