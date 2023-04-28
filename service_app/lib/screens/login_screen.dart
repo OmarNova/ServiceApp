@@ -111,15 +111,15 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             SizedBox(
               height: 80,
-              child: Image.network(
-                'https://cdn.vox-cdn.com/thumbor/IULs8cgukIn_-pIgMY9WFZsVOUk=/0x0:1280x800/1400x788/filters:focal(640x400:641x401)/cdn.vox-cdn.com/uploads/chorus_asset/file/19700731/googlemaps.png',
-                fit: BoxFit.contain,
-              ),
+              //child: Image.network(
+              //'https://cdn.vox-cdn.com/thumbor/IULs8cgukIn_-pIgMY9WFZsVOUk=/0x0:1280x800/1400x788/filters:focal(640x400:641x401)/cdn.vox-cdn.com/uploads/chorus_asset/file/19700731/googlemaps.png',
+              //fit: BoxFit.contain,
+              //),
             ),
             const SizedBox(height: 16),
             const Center(
               child: Text(
-                'ServicesApp',
+                '',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
+                  return 'Por favor, ingrese su Email';
                 }
                 return null;
               },
@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: 'Cotnraseña',
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
                 ),
@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
+                  return 'Por favor, ingrese su contraseña';
                 }
                 return null;
               },
@@ -191,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     )
                   : const Text(
-                      'Login',
+                      'Iniciar sesión',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
               },
               child: const Text(
-                'Create new account',
+                'Crear nueva cuenta',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
