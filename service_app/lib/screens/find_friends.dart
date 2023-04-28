@@ -16,7 +16,7 @@ class FindFriends extends StatefulWidget {
 
 class _FindFriendsState extends State<FindFriends> {
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(7.038344304774475, -73.07223619010055),
+    target: LatLng(7.071095943194607, -73.09542840448717),
     zoom: 14.4746,
   );
 
@@ -33,20 +33,20 @@ class _FindFriendsState extends State<FindFriends> {
     {
       "name": "Omar",
       "position": LatLng(7.088264308145569, -73.10577371522287),
-      "marker": 'assets/markers/marker-1.png',
-      "image": 'assets/images/avatar-1.png',
-    },
-    {
-      "name": "Mario",
-      "position": LatLng(7.11576845737679, -73.11480008465625),
       "marker": 'assets/markers/marker-3.png',
       "image": 'assets/images/avatar-3.png',
     },
     {
+      "name": "Mario",
+      "position": LatLng(7.11576845737679, -73.11480008465625),
+      "marker": 'assets/markers/marker-1.png',
+      "image": 'assets/images/avatar-1.png',
+    },
+    {
       "name": "Diego",
       "position": LatLng(7.063775419944369, -73.09406398005157),
-      "marker": 'assets/markers/marker-4.png',
-      "image": 'assets/images/avatar-4.png',
+      "marker": 'assets/markers/marker-7.png',
+      "image": 'assets/images/avatar-7.png',
     },
   ];
 
