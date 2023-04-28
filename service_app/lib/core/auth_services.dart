@@ -27,7 +27,9 @@ class AuthService {
 
       return token;
     } else {
-      throw Exception('Failed to authenticate');
+      final token = jsonDecode(response.body);
+      print(token);
+      return token;
     }
   }
 

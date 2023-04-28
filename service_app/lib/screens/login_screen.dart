@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:service_app/screens/home_screen.dart';
 import 'package:service_app/core/auth_services.dart';
@@ -33,12 +34,57 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _emailController.text.trim();
     final passwd = _passwordController.text.trim();
 
+    if (email.isEmpty || passwd.isEmpty) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Por favor, complete todos los campos.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (!EmailValidator.validate(email)) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Por favor, ingrese un correo electrónico válido.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     try {
       _authService.login(email: email, passwd: passwd).then((value) {
         if (!value['error']) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } else if (value['message'] == 'User not Found') {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Información'),
+                content: const Text(
+                    'El correo electrónico no está registrado. Por favor, regístrese.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
           );
         } else {
           showDialog(
@@ -147,6 +193,9 @@ class _LoginScreenState extends State<LoginScreen> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, ingrese su Email';
+                } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                    .hasMatch(value)) {
+                  return 'Ingrese un correo electrónico valido';
                 }
                 return null;
               },
