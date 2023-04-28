@@ -174,7 +174,8 @@ class _SocioScreenState extends State<SocioScreen> {
               child: ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(255, 153, 0, 1))),
+                  Color.fromRGBO(61, 38, 12, 1),
+                )),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _authService.registerSocio(
