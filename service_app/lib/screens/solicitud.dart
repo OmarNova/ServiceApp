@@ -22,9 +22,7 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
   bool _isSendingEnabled = false;
 
   List<String> _servicios = [
-    'Trabajador',
     'Plomería',
-    'Empleada',
     'Técnico',
   ];
 
@@ -39,6 +37,9 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
       List<String> categorias = await AuthService().getCategorias();
       setState(() {
         _categorias = categorias;
+        if (_categorias.isNotEmpty) {
+          _tipoServicioController.text = _categorias[0];
+        }
       });
     } catch (e) {
       print('Error fetching categories: $e');
