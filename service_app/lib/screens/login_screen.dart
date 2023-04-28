@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Cotnraseña',
+                labelText: 'Contraseña',
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
                 ),
