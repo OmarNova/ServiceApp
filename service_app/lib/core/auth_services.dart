@@ -74,6 +74,12 @@ class AuthService {
     String descripcion,
     String categoria,
   ) async {
+    final token = await _prefs.getString('token');
+    final headers = {'Content-Type': 'application/json; charset=UTF-8'};
+    if (token != null && await isTokenValid(token)) {
+      headers['authorization'] = token;
+    }
+
     final body = {
       'email': email,
       'trabajo': trabajo,
@@ -82,8 +88,7 @@ class AuthService {
     };
 
     var res = await http.post(Uri.parse('$baseUrl/trabajador/register'),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: jsonEncode(body));
+        headers: headers, body: jsonEncode(body));
 
     if (res.statusCode == 200) {
       return jsonDecode(res.body);
@@ -117,6 +122,48 @@ class AuthService {
     } catch (e) {
       print(e);
       throw Exception('Error fetching workers');
+    }
+  }
+
+  Future<Map<String, dynamic>> enviarSolicitud(
+      Map<String, dynamic> data) async {
+    final url = Uri.parse('$baseUrl/empleador/solicitud');
+    final token = await _prefs.getString('token');
+    print('Token:$token');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': "$token",
+      },
+      body: jsonEncode(data),
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print('Error en la solicitud: ${response.statusCode}');
+      print('Mensaje del servidor: ${response.body}');
+      throw Exception('Failed to send request');
+    }
+  }
+
+  Future<List<String>> getCategorias() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/categorias'));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['error'] == false) {
+          final categorias = List<String>.from(data['categorias']);
+          return categorias;
+        } else {
+          throw Exception('API error: ${data['message']}');
+        }
+      } else {
+        throw Exception('Failed to fetch categories');
+      }
+    } catch (e) {
+      print(e);
+      throw Exception('Error fetching categories');
     }
   }
 }

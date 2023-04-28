@@ -22,8 +22,27 @@ class _SocioScreenState extends State<SocioScreen> {
   final dropdownController = TextEditingController();
   String? _categoria;
   bool _isLoading = false;
-  //List<String> _categorias = ['Limpieza & Aseo', 'Plomería', 'Mantenimiento'];
   List<String> _categorias = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _authService = AuthService();
+    _getCategorias();
+  }
+
+  void _getCategorias() async {
+    try {
+      final categorias = await _authService.getCategorias();
+      setState(() {
+        _categorias = categorias;
+        _categoria = _categorias[
+            0]; // establece la primera categoría como predeterminada
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   void _submitForm() {
     setState(() {
@@ -79,112 +98,102 @@ class _SocioScreenState extends State<SocioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MyMaterialApp(
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Introduce tu email',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Introduce un email válido';
+    return MyMaterialApp(Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                hintText: 'Introduce tu email',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Introduce un email válido';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _trabajoController,
+              decoration: InputDecoration(
+                labelText: 'Trabajo',
+                hintText: 'Introduce el trabajo que ofreces',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Introduce un trabajo válido';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _descripcionController,
+              decoration: InputDecoration(
+                labelText: 'Descripción',
+                hintText: 'Introduce una breve descripción del trabajo',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Introduce una descripción válida';
+                }
+                return null;
+              },
+            ),
+            DropdownButtonFormField<String>(
+              value: _categoria,
+              items: _categorias.map((categoria) {
+                return DropdownMenuItem(
+                  value: categoria,
+                  child: Text(categoria),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: 'Categoría',
+                hintText: 'Selecciona una categoría',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Selecciona una categoría';
+                }
+                return null;
+              },
+              onChanged: (value) {
+                setState(() {
+                  dropdownController.text = value!;
+                  _categoria = value;
+                });
+              },
+            ),
+            SizedBox(height: 16.0),
+            Center(
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(255, 153, 0, 1))),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _authService.registerSocio(
+                      _emailController.text,
+                      _trabajoController.text,
+                      _descripcionController.text,
+                      dropdownController.text,
+                    );
                   }
-                  return null;
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                  print(_categoria);
                 },
+                child: Text('Enviar'),
               ),
-              TextFormField(
-                controller: _trabajoController,
-                decoration: InputDecoration(
-                  labelText: 'Trabajo',
-                  hintText: 'Introduce el trabajo que ofreces',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Introduce un trabajo válido';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _descripcionController,
-                decoration: InputDecoration(
-                  labelText: 'Descripción',
-                  hintText: 'Introduce una breve descripción del trabajo',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Introduce una descripción válida';
-                  }
-                  return null;
-                },
-              ),
-              DropdownButtonFormField<String>(
-                value: _categoria,
-                items: [
-                  DropdownMenuItem(
-                    value: 'limpieza&aseo',
-                    child: Text('Limpieza y Aseo'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'plomeria',
-                    child: Text('Plomería'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'mantenimiento',
-                    child: Text('Mantenimiento'),
-                  ),
-                ],
-                decoration: InputDecoration(
-                  labelText: 'Categoría',
-                  hintText: 'Selecciona una categoría',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Selecciona una categoría';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    dropdownController.text = value!;
-                    _categoria = value;
-                  });
-                },
-              ),
-              SizedBox(height: 16.0),
-              Center(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromRGBO(255, 153, 0, 1))),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _authService.registerSocio(
-                        _emailController.text,
-                        _trabajoController.text,
-                        _descripcionController.text,
-                        dropdownController.text,
-                      );
-                    }
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
-                    print(_categoria);
-                  },
-                  child: Text('Enviar'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      )
-    );
+      ),
+    ));
   }
 }

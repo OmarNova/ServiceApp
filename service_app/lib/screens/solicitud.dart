@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../core/auth_services.dart';
+
 //import 'package:intl/intl.dart';
 
 class SolicitudScreen extends StatefulWidget {
@@ -10,16 +13,17 @@ class SolicitudScreen extends StatefulWidget {
 
 class _SolicitudScreenState extends State<SolicitudScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _tituloController = TextEditingController();
   final _tipoServicioController = TextEditingController();
   final _descripcionController = TextEditingController();
-  final _dateController = TextEditingController();
-  DateTime? _fechaSeleccionada;
-
+  final _direccionController = TextEditingController();
+  final AuthService _authService = AuthService();
+  List<String> _categorias = [];
   bool _isSendingEnabled = false;
 
   List<String> _servicios = [
     'Trabajador',
-    'Plomero',
+    'Plomería',
     'Empleada',
     'Técnico',
   ];
@@ -27,54 +31,124 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
   @override
   void initState() {
     super.initState();
-    _tipoServicioController.text = _servicios.first;
+    _getCategorias();
+  }
+
+  Future<void> _getCategorias() async {
+    try {
+      List<String> categorias = await AuthService().getCategorias();
+      setState(() {
+        _categorias = categorias;
+      });
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
   }
 
   void _onTipoServicioChanged(String? value) {
     setState(() {
       _tipoServicioController.text = value!;
+      _isSendingEnabled = _tituloController.text.isNotEmpty &&
+          _descripcionController.text.isNotEmpty;
+    });
+  }
+
+  void _onTituloChanged(String value) {
+    _tituloController.text = value; // Actualiza el controlador
+    setState(() {
+      _isSendingEnabled = _tituloController.text.isNotEmpty &&
+          _descripcionController.text.isNotEmpty;
+    });
+  }
+
+  void _onDireccionChanged(String value) {
+    setState(() {
+      _isSendingEnabled = _tituloController.text.isNotEmpty &&
+          _descripcionController.text.isNotEmpty &&
+          _direccionController
+              .text.isNotEmpty; // Actualiza la variable `_isSendingEnabled`
     });
   }
 
   void _onDescripcionChanged(String value) {
     setState(() {
-      _isSendingEnabled = value.isNotEmpty && _fechaSeleccionada != null;
+      _isSendingEnabled = _tituloController.text.isNotEmpty && value.isNotEmpty;
     });
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    FocusScope.of(context).requestFocus(FocusNode()); // Agregar esta línea
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
-      setState(() {
-        _fechaSeleccionada = picked;
-        _isSendingEnabled = _descripcionController.text.isNotEmpty;
-      });
-    }
-  }
-
-  void _enviarSolicitud() {
+  void _enviarSolicitud() async {
     if (_formKey.currentState!.validate()) {
-      // Aquí podrías enviar la solicitud al servidor
-      // y mostrar un mensaje de éxito al usuario
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Solicitud enviada con éxito')),
-      );
-      Navigator.of(context).pop();
+      //Print
+
+      print('Datos de la solicitud:');
+      print('Título: ${_tituloController.text}');
+      print('Tipo de servicio: ${_tipoServicioController.text}');
+      print('Descripción: ${_descripcionController.text}');
+      print('Dirección: ${_direccionController.text}');
+
+      final Map<String, dynamic> data = {
+        'titulo': _tituloController.text,
+        'categoria': _tipoServicioController.text,
+        'descripcion': _descripcionController.text,
+        'direccion': _direccionController.text,
+      };
+      try {
+        final response = await _authService.enviarSolicitud(data);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Solicitud enviada con éxito'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Aceptar'),
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(61, 38, 12, 1)),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } catch (e) {
+        print(e);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error al enviar la solicitud'),
+              content: Text('Por favor intenta de nuevo más tarde'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Aceptar'),
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(61, 38, 12, 1)),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Nuevo color de fondo
       appBar: AppBar(
         title: Text('Nueva Solicitud'),
-        backgroundColor: Color.fromRGBO(255, 153, 0, 1),
+        backgroundColor: Color.fromRGBO(61, 38, 12, 1),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -83,15 +157,29 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              TextFormField(
+                controller: _tituloController,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  labelText: 'Titulo de la solicitud',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un titulo';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: _tipoServicioController.text,
                 decoration: InputDecoration(
                   labelText: 'Tipo de Servicio',
                 ),
-                items: _servicios.map((servicio) {
+                items: _categorias.map((categoria) {
                   return DropdownMenuItem<String>(
-                    value: servicio,
-                    child: Text(servicio),
+                    value: categoria,
+                    child: Text(categoria),
                   );
                 }).toList(),
                 onChanged: _onTipoServicioChanged,
@@ -103,39 +191,39 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
               TextFormField(
                 controller: _descripcionController,
                 decoration: InputDecoration(
-                  hintText: 'Descripción del Servicio',
+                  labelText: 'Descripción del servicio',
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa una descripción';
+                  }
+                  return null;
+                },
                 onChanged: _onDescripcionChanged,
                 maxLines: 4,
               ),
-              SizedBox(height: 16),
-              InkWell(
-                onTap: () {
-                  _selectDate(context);
-                },
-                child: InputDecorator(
-                  decoration: InputDecoration(
-                    labelText: 'Fecha de la Solicitud',
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _fechaSeleccionada != null
-                            ? '${_fechaSeleccionada!.day}/${_fechaSeleccionada!.month}/${_fechaSeleccionada!.year}'
-                            : 'Seleccionar Fecha',
-                      ),
-                      Icon(Icons.calendar_today),
-                    ],
-                  ),
-                ),
-              ),
               SizedBox(height: 24),
-
+              TextFormField(
+                controller: _direccionController,
+                decoration: InputDecoration(
+                  labelText: 'Dirección',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa una dirección';
+                  }
+                  return null;
+                },
+              ),
               // Botón para enviar la solicitud
               ElevatedButton(
                 onPressed: _isSendingEnabled ? _enviarSolicitud : null,
-                child: const Text('Enviar solicitud'),
+                child: Text('Enviar solicitud'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromRGBO(61, 38, 12, 1),
+                  ),
+                ),
               ),
             ],
           ),
