@@ -9,7 +9,7 @@ import 'package:service_app/customwidgets/custom_appbar.dart';
 import 'package:service_app/customwidgets/cards.dart';
 
 class HomeScreen extends StatefulWidget {
-   const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 // Always use this as the skeleton of the views
 class MyMaterialApp extends StatefulWidget {
   Widget body;
-   MyMaterialApp(this.body, {Key? key}) : super(key: key);
+  MyMaterialApp(this.body, {Key? key}) : super(key: key);
 
   @override
   State<MyMaterialApp> createState() => _MyMaterialAppState();
@@ -71,6 +71,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                         email: 'Juanperez@gmail.com',
                         profileImageUrl:
                             'https://cdn-icons-png.flaticon.com/512/3001/3001758.png',
+                        token: _token,
                       )));
         },
         onRoute1Pressed: () {
@@ -95,6 +96,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
     );
   }
 }
+
 class _HomeScreenState extends State<HomeScreen> {
   String _token = '';
   String _selectedRole = 'equisde';
@@ -125,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: WorkerCardList(), // Reemplaza el ListView aquí
           ),
         ],
-      ),);
+      ),
+    );
   }
 }

@@ -127,6 +127,23 @@ class AuthService {
     }
   }
 
+  Future<Map<String, dynamic>> getEmpleadorInfo(String token) async {
+    final headers = {
+      'Content-Type': 'application/json',
+      'authorization': token,
+    };
+
+    final response =
+        await http.get(Uri.parse('$baseUrl/empleador'), headers: headers);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return data['datos'][0];
+    } else {
+      throw Exception('Failed to fetch employer data');
+    }
+  }
+
   Future<Map<String, dynamic>> enviarSolicitud(
       Map<String, dynamic> data) async {
     final url = Uri.parse('$baseUrl/empleador/solicitud');
