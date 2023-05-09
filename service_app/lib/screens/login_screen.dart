@@ -148,126 +148,134 @@ class _LoginScreenState extends State<LoginScreen> {
           width: 140.0, // aumentar el valor de width
           child: Image.asset("assets/images/logo.png"),
         ),
-        backgroundColor: Color.fromRGBO(61, 38, 12, 1),
+        backgroundColor: Color.fromRGBO(63, 121, 255, 1),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 80,
-              //child: Image.network(
-              //'https://cdn.vox-cdn.com/thumbor/IULs8cgukIn_-pIgMY9WFZsVOUk=/0x0:1280x800/1400x788/filters:focal(640x400:641x401)/cdn.vox-cdn.com/uploads/chorus_asset/file/19700731/googlemaps.png',
-              //fit: BoxFit.contain,
-              //),
-            ),
-            const SizedBox(height: 16),
-            const Center(
-              child: Text(
-                '',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(61, 38, 12, 1),
-                ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 80,
+                //child: Image.network(
+                //'https://cdn.vox-cdn.com/thumbor/IULs8cgukIn_-pIgMY9WFZsVOUk=/0x0:1280x800/1400x788/filters:focal(640x400:641x401)/cdn.vox-cdn.com/uploads/chorus_asset/file/19700731/googlemaps.png',
+                //fit: BoxFit.contain,
+                //),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, ingrese su Email';
-                } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                    .hasMatch(value)) {
-                  return 'Ingrese un correo electrónico valido';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Contraseña',
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, ingrese su contraseña';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _isLoading
-                  ? null
-                  : () {
-                      _login();
-                    },
-              style: ElevatedButton.styleFrom(
-                primary: Color.fromRGBO(61, 38, 12, 1),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-              child: _isLoading
-                  ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                  : const Text(
-                      'Iniciar sesión',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-            ),
-            const SizedBox(height: 15),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RegisterScreen(),
+              const SizedBox(height: 16),
+              const Center(
+                child: Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(63, 121, 255, 1),
                   ),
-                );
-              },
-              child: const Text(
-                'Crear nueva cuenta',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(61, 38, 12, 1),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, ingrese su Email';
+                  } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                      .hasMatch(value)) {
+                    return 'Ingrese un correo electrónico valido';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Contraseña',
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, ingrese su contraseña';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: _isLoading
+                    ? null
+                    : () {
+                        _login();
+                      },
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromRGBO(63, 121, 255, 1),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                child: _isLoading
+                    ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                    : const Text(
+                        'Iniciar sesión',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+              ),
+              const SizedBox(height: 15),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegisterScreen(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Crear nueva cuenta',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(63, 121, 255, 1),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

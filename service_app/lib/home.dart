@@ -12,14 +12,7 @@ class HomePage extends StatelessWidget {
           width: 140.0,
           child: Image.asset("assets/images/logo.png"),
         ),
-        backgroundColor: Color.fromRGBO(61, 38, 12, 1),
-        textTheme: TextTheme(
-          headline6: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        backgroundColor: Color.fromRGBO(63, 121, 255, 1),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -52,7 +45,7 @@ class HomePage extends StatelessWidget {
               Text(
                 '¡Bienvenido a ServicesApp!',
                 style: TextStyle(
-                  color: Color.fromRGBO(61, 38, 12, 1),
+                  color: Color.fromRGBO(63, 121, 255, 1),
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -62,7 +55,7 @@ class HomePage extends StatelessWidget {
                 'Encuentra trabajadores de oficios varios para cualquier tarea que necesites en tu hogar o negocio.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color.fromRGBO(61, 38, 12, 1),
+                  color: Color.fromRGBO(63, 121, 255, 1),
                   fontSize: 18.0,
                 ),
               ),
@@ -80,7 +73,7 @@ class HomePage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color.fromRGBO(61, 38, 12, 1),
+                      primary: Color.fromRGBO(63, 121, 255, 1),
                     ),
                     child: Text('Iniciar Sesión'),
                   ),
@@ -95,7 +88,7 @@ class HomePage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color.fromRGBO(61, 38, 12, 1),
+                      primary: Color.fromRGBO(63, 121, 255, 1),
                     ),
                     child: Text('Registrarse'),
                   ),

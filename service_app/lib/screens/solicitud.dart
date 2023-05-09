@@ -149,7 +149,7 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
       // Nuevo color de fondo
       appBar: AppBar(
         title: Text('Nueva Solicitud'),
-        backgroundColor: Color.fromRGBO(61, 38, 12, 1),
+        backgroundColor: Color.fromRGBO(63, 121, 255, 1),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),

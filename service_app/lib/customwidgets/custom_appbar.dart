@@ -34,7 +34,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         width: 140.0, // aumentar el valor de width
         child: Image.asset("assets/images/logo.png"),
       ),
-      backgroundColor: Color.fromRGBO(61, 38, 12, 1),
+      backgroundColor: Color.fromRGBO(63, 121, 255, 1),
       actions: [
         CustomDropdown(
           onMiCuentaPressed: widget.onMiCuentaPressed,

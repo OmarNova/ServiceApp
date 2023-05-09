@@ -83,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(61, 38, 12, 1),
+        backgroundColor: Color.fromRGBO(63, 121, 255, 1),
         title: Text('Register'),
       ),
       body: SingleChildScrollView(
@@ -101,8 +101,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       labelText: 'Email',
                       prefixIcon: Icon(Icons.email),
                       border: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromRGBO(61, 38, 12, 1)),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(63, 121, 255, 1),
+                        ),
                         borderRadius: BorderRadius.circular(8),
                       )),
                   validator: (value) {
@@ -200,7 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromRGBO(61, 38, 12, 1),
+                      Color.fromRGBO(63, 121, 255, 1),
                     ),
                   ),
                   child: _isLoading

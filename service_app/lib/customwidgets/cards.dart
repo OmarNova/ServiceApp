@@ -40,7 +40,7 @@ class WorkerCard extends StatelessWidget {
             child: Container(
               width: 80,
               height: 80,
-              color: Color.fromRGBO(61, 38, 12, 1),
+              color: Color.fromRGBO(63, 121, 255, 1),
             ),
           ),
           const SizedBox(width: 10),
