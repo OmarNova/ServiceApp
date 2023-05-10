@@ -70,7 +70,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                         name: 'Juan Pérez',
                         email: 'Juanperez@gmail.com',
                         profileImageUrl:
-                            'https://cdn-icons-png.flaticon.com/512/3001/3001758.png',
+                            'http://serviceapp.bucaramanga.upb.edu.co/api/empleador/imagen/perfil?token=$_token',
                         token: _token,
                       )));
         },

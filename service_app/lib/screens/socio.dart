@@ -184,6 +184,11 @@ class _SocioScreenState extends State<SocioScreen> {
                       _descripcionController.text,
                       dropdownController.text,
                     );
+                    print("ccccccc");
+                     print(_emailController.text);
+                      print(_trabajoController.text);
+                     print( _descripcionController.text);
+                     print(dropdownController.text);
                   }
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => HomeScreen()));

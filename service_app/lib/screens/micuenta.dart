@@ -1,5 +1,6 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:service_app/core/auth_services.dart';
@@ -24,9 +25,7 @@ class MiCuentaScreen extends StatefulWidget {
 
 class _MiCuentaScreenState extends State<MiCuentaScreen> {
   Map<String, dynamic> _empleadorInfo = {};
-  late String jaja = "test";
   File? _profileImage;
-
   DecorationImage? _profileDecorationImage;
 
   @override
@@ -34,21 +33,17 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
     super.initState();
     _getEmpleadorInfo();
     _profileDecorationImage = DecorationImage(
-        image: NetworkImage(widget.profileImageUrl), fit: BoxFit.cover);
-    List<int> bytes = [];
-    if (_profileImage != null) {
-      bytes = _profileImage!.readAsBytesSync();
-    }
-    String imagenBase64 = base64Encode(bytes);
-    subirImagen(widget.email, imagenBase64).then((value) {});
+      image: NetworkImage(widget.profileImageUrl),
+      fit: BoxFit.cover,
+    );
   }
 
   Future<void> _getEmpleadorInfo() async {
     try {
-      final empleadorInfo = await AuthService().getEmpleadorInfo(widget.token);
+      final empleadorInfo =
+          await AuthService().getEmpleadorInfo(widget.token);
       setState(() {
         _empleadorInfo = empleadorInfo;
-        jaja = "bien";
       });
     } catch (e) {
       print(e);
@@ -68,6 +63,7 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
     try {
       final response =
           await http.post(url, body: jsonEncode(body), headers: headers);
+      print(response);
       if (response.statusCode == 200) {
         print('Imagen subida exitosamente');
       } else {

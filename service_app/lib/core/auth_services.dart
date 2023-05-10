@@ -88,12 +88,15 @@ class AuthService {
       'descripcion': descripcion,
       'categoria': categoria,
     };
-
+    print("bbbbbbbbbbbbbbbbbbbbb");
+    print(categoria);
     var res = await http.post(Uri.parse('$baseUrl/trabajador/register'),
         headers: headers, body: jsonEncode(body));
 
     if (res.statusCode == 200) {
+      print("se registro correctamente el socio");
       return jsonDecode(res.body);
+      
     } else {
       print('Error al registrarse');
       throw Exception('Failed to authenticate');
