@@ -59,11 +59,12 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
       HttpHeaders.contentTypeHeader: 'application/json',
       "authorization": widget.token
     };
-
+     print("ddddddddddd");
     try {
       final response =
           await http.post(url, body: jsonEncode(body), headers: headers);
       print(response);
+        print("eeeeeeee");
       if (response.statusCode == 200) {
         print('Imagen subida exitosamente');
       } else {
@@ -222,7 +223,7 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
     );
   }
 
-  Future<void> _showImagePicker(BuildContext context) async {
+    Future<void> _showImagePicker(BuildContext context) async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await showModalBottomSheet<XFile?>(
       context: context,
@@ -236,6 +237,16 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
                 onPressed: () async {
                   final XFile? photo =
                       await _picker.pickImage(source: ImageSource.camera);
+                  if (photo != null) {
+                    final bytes = await photo.readAsBytes();
+                    final base64Image = base64Encode(bytes);
+                    await subirImagen(widget.email, base64Image);
+                    setState(() {
+                      _profileImage = File(photo.path);
+                      _profileDecorationImage = DecorationImage(
+                          image: FileImage(_profileImage!), fit: BoxFit.cover);
+                    });
+                  }
                   Navigator.pop(context, photo);
                 },
                 child: const ListTile(
@@ -247,6 +258,16 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
                 onPressed: () async {
                   final XFile? photo =
                       await _picker.pickImage(source: ImageSource.gallery);
+                  if (photo != null) {
+                    final bytes = await photo.readAsBytes();
+                    final base64Image = base64Encode(bytes);
+                    await subirImagen(widget.email, base64Image);
+                    setState(() {
+                      _profileImage = File(photo.path);
+                      _profileDecorationImage = DecorationImage(
+                          image: FileImage(_profileImage!), fit: BoxFit.cover);
+                    });
+                  }
                   Navigator.pop(context, photo);
                 },
                 child: const ListTile(
@@ -268,4 +289,5 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
       });
     }
   }
+
 }
