@@ -60,6 +60,7 @@ class _MiCuentaScreenState extends State<MiCuentaScreen> {
       "authorization": widget.token
     };
      print("ddddddddddd");
+     print(base64Image);
     try {
       final response =
           await http.post(url, body: jsonEncode(body), headers: headers);

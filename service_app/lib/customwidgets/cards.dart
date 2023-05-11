@@ -8,12 +8,16 @@ class WorkerCard extends StatelessWidget {
   final String description;
   final String trabajo;
   final String categoria;
+  final VoidCallback onAccept;
+  final VoidCallback onReject;
 
   const WorkerCard({
     required this.nombres,
     required this.description,
     required this.trabajo,
     required this.categoria,
+    required this.onAccept,
+    required this.onReject,
   });
 
   @override
@@ -40,7 +44,7 @@ class WorkerCard extends StatelessWidget {
             child: Container(
               width: 80,
               height: 80,
-              color: Color.fromRGBO(63, 121, 255, 1),
+              color:  Color.fromRGBO(63, 156, 255, 1),
             ),
           ),
           const SizedBox(width: 10),
@@ -80,6 +84,25 @@ class WorkerCard extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(width: 10),
+          Column(
+            children: [
+              ElevatedButton(
+                onPressed: onAccept,
+                child: Text('Aceptar'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green, // Color verde
+                ), 
+              ),
+              ElevatedButton(
+                onPressed: onReject,
+                child: Text('Rechazar'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red, // Color verde
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -110,7 +133,7 @@ class WorkerCardList extends StatelessWidget {
                     : '',
                 categoria: worker['categoria'] != null
                     ? worker['categoria'] as String
-                    : '',
+                    : '', onAccept: () {  }, onReject: () {  },
               );
             },
           );
