@@ -48,6 +48,24 @@ class _FindFriendsState extends State<FindFriends> {
       "marker": 'assets/markers/marker-7.png',
       "image": 'assets/images/avatar-7.png',
     },
+    {
+      "name": "Jossyr",
+      "position": LatLng(7.088264308145569, -73.10577371522287),
+      "marker": 'assets/markers/marker-3.png',
+      "image": 'assets/images/avatar-3.png',
+    },
+    {
+      "name": "Paez",
+      "position": LatLng(7.11576845737679, -73.11480008465625),
+      "marker": 'assets/markers/marker-1.png',
+      "image": 'assets/images/avatar-1.png',
+    },
+    {
+      "name": "Cala",
+      "position": LatLng(7.063775419944369, -73.09406398005157),
+      "marker": 'assets/markers/marker-7.png',
+      "image": 'assets/images/avatar-7.png',
+    },
   ];
 
   @override

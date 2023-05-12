@@ -96,110 +96,102 @@ class _SocioScreenState extends State<SocioScreen> {
     });
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
-    return MyMaterialApp(Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                hintText: 'Introduce tu email',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Introduce un email válido';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _trabajoController,
-              decoration: InputDecoration(
-                labelText: 'Trabajo',
-                hintText: 'Introduce el trabajo que ofreces',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Introduce un trabajo válido';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _descripcionController,
-              decoration: InputDecoration(
-                labelText: 'Descripción',
-                hintText: 'Introduce una breve descripción del trabajo',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Introduce una descripción válida';
-                }
-                return null;
-              },
-            ),
-            DropdownButtonFormField<String>(
-              value: _categoria,
-              items: _categorias.map((categoria) {
-                return DropdownMenuItem(
-                  value: categoria,
-                  child: Text(categoria),
-                );
-              }).toList(),
-              decoration: InputDecoration(
-                labelText: 'Categoría',
-                hintText: 'Selecciona una categoría',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Selecciona una categoría';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                setState(() {
-                  dropdownController.text = value!;
-                  _categoria = value;
-                });
-              },
-            ),
-            SizedBox(height: 16.0),
-            Center(
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                  Color.fromRGBO(61, 38, 12, 1),
-                )),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _authService.registerSocio(
-                      _emailController.text,
-                      _trabajoController.text,
-                      _descripcionController.text,
-                      dropdownController.text,
+    return MyMaterialApp(
+      SingleChildScrollView( // Wrap the SocioScreen widget with SingleChildScrollView
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Introduce tu email',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Introduce un email válido';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _trabajoController,
+                   decoration: InputDecoration(
+                    labelText: 'Trabajo',
+                    hintText: 'Introduce el trabajo que ofreces',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Introduce un trabajo válido';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _descripcionController,
+                  decoration: InputDecoration(
+                    labelText: 'Descripción',
+                    hintText: 'Introduce una breve descripción del trabajo',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Introduce una descripción válida';
+                    }
+                    return null;
+                  },
+                ),
+                DropdownButtonFormField<String>(
+                  value: _categoria,
+                  items: _categorias.map((categoria) {
+                    return DropdownMenuItem(
+                      value: categoria,
+                      child: Text(categoria),
                     );
-                    print("ccccccc");
-                     print(_emailController.text);
-                      print(_trabajoController.text);
-                     print( _descripcionController.text);
-                     print(dropdownController.text);
-                  }
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
-                  print(_categoria);
-                },
-                child: Text('Enviar'),
-              ),
+                  }).toList(),
+                  decoration: InputDecoration(
+                    labelText: 'Categoría',
+                    hintText: 'Selecciona una categoría',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Selecciona una categoría';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      dropdownController.text = value!;
+                      _categoria = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 16.0),
+                Center(
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(61, 38, 12, 1),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _submitForm();
+                      }
+                    },
+                    child: Text('Enviar'),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }
