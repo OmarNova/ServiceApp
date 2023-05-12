@@ -3,12 +3,17 @@ import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+SharedPreferences? _prefs;
+
 class AuthService {
   final String baseUrl = 'http://serviceapp.bucaramanga.upb.edu.co/api';
-  late SharedPreferences _prefs;
 
-  AuthService() {
-    SharedPreferences.getInstance().then((prefs) => _prefs = prefs);
+  Future<SharedPreferences> get preferencias async {
+    if (_prefs != null) {
+      return _prefs!;
+    }
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs!;
   }
 
   Future<Map<String, dynamic>> login(
@@ -39,8 +44,8 @@ class AuthService {
   }
 
   Future<bool> deleteToken() async {
-    _prefs = await SharedPreferences.getInstance();
-    final result = await _prefs.remove('token');
+    final _prefrencias = await preferencias;
+    final result = await _prefrencias.remove('token');
     return result;
   }
 
@@ -71,19 +76,18 @@ class AuthService {
   }
 
   Future<Map<String, dynamic>> registerSocio(
-    String email,
     String trabajo,
     String descripcion,
     String categoria,
   ) async {
-    final token = await _prefs.getString('token');
+    final _prefrencias = await preferencias;
+    final token = await _prefrencias.getString('token');
     final headers = {'Content-Type': 'application/json; charset=UTF-8'};
     if (token != null && await isTokenValid(token)) {
       headers['authorization'] = token;
     }
 
     final body = {
-      'email': email,
       'trabajo': trabajo,
       'descripcion': descripcion,
       'categoria': categoria,
@@ -96,7 +100,6 @@ class AuthService {
     if (res.statusCode == 200) {
       print("se registro correctamente el socio");
       return jsonDecode(res.body);
-      
     } else {
       print('Error al registrarse');
       throw Exception('Failed to authenticate');
@@ -150,7 +153,8 @@ class AuthService {
   Future<Map<String, dynamic>> enviarSolicitud(
       Map<String, dynamic> data) async {
     final url = Uri.parse('$baseUrl/empleador/solicitud');
-    final token = await _prefs.getString('token');
+    final _prefrencias = await preferencias;
+    final token = await _prefrencias.getString('token');
     print('Token:$token');
     final response = await http.post(
       url,
@@ -186,6 +190,39 @@ class AuthService {
     } catch (e) {
       print(e);
       throw Exception('Error fetching categories');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getSolicitudes() async {
+    try {
+      final _prefrencias = await preferencias;
+      final token = await _prefrencias.getString('token');
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/empleador/solicitudes'),
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': "$token",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> solicitudes =
+            jsonDecode(response.body)['solicitudes'];
+
+        return solicitudes
+            .map((solicitud) => {
+                  'titulo': solicitud['titulo'],
+                  'descripcion': solicitud['descripcion'],
+                  'direccion': solicitud['direccion'],
+                })
+            .toList();
+      } else {
+        throw Exception('Failed to fetch solicitudes');
+      }
+    } catch (e) {
+      print(e);
+      throw Exception('Error fetching solicitudes');
     }
   }
 }

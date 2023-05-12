@@ -105,7 +105,7 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
                   child: Text('Aceptar'),
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(61, 38, 12, 1)),
+                        Color.fromRGBO(63, 121, 255, 1)),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -129,7 +129,7 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
                   child: Text('Aceptar'),
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(61, 38, 12, 1)),
+                        Color.fromRGBO(63, 121, 255, 1)),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -222,7 +222,7 @@ class _SolicitudScreenState extends State<SolicitudScreen> {
                 child: Text('Enviar solicitud'),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                    Color.fromRGBO(61, 38, 12, 1),
+                    Color.fromRGBO(63, 121, 255, 1),
                   ),
                 ),
               ),

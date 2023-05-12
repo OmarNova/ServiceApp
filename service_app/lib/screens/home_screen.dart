@@ -4,6 +4,7 @@ import 'package:service_app/screens/login_screen.dart';
 import 'package:service_app/screens/micuenta.dart';
 import 'package:service_app/screens/socio.dart';
 import 'package:service_app/screens/solicitud.dart';
+import 'package:service_app/screens/solicitudes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:service_app/customwidgets/custom_appbar.dart';
 import 'package:service_app/customwidgets/cards.dart';
@@ -86,6 +87,10 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => SocioScreen()));
         },
+        onSolicitudesPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => SolicitudesScreen()));
+        },
         onLogoutPressed: () async {
           await _logout(context);
           await _deleteToken(context);
@@ -107,6 +112,22 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadToken();
   }
 
+  Widget _buildSolicitudesButton() {
+    return Positioned(
+      top: 16,
+      right: 16,
+      child: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SolicitudesScreen()),
+          );
+        },
+        child: Icon(Icons.list),
+      ),
+    );
+  }
+
   Future<void> _loadToken() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -124,7 +145,11 @@ class _HomeScreenState extends State<HomeScreen> {
             //aca puede ir un widget
           ),
           Expanded(
-            child: WorkerCardList(), // Reemplaza el ListView aquí
+            child: Stack(
+              children: [
+                WorkerCardList(), // Reemplaza el ListView aquí
+              ],
+            ),
           ),
         ],
       ),

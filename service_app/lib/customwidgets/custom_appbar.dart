@@ -5,6 +5,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function() onRoute1Pressed;
   final Function() onRoute2Pressed;
   final Function() onSocioPressed;
+  final Function() onSolicitudesPressed;
   final Function() onLogoutPressed;
 
   const CustomAppBar({
@@ -13,6 +14,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     required this.onRoute1Pressed,
     required this.onRoute2Pressed,
     required this.onSocioPressed,
+    required this.onSolicitudesPressed,
     required this.onLogoutPressed,
   }) : super(key: key);
 
@@ -29,6 +31,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: SizedBox(
         height: 140.0, // aumentar el valor de height
         width: 140.0, // aumentar el valor de width
@@ -41,6 +44,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           onRoute1Pressed: widget.onRoute1Pressed,
           onRoute2Pressed: widget.onRoute2Pressed,
           onSocioPressed: widget.onSocioPressed,
+          onSolicitudesPressed: widget.onSolicitudesPressed,
           onLogoutPressed: widget.onLogoutPressed,
         ),
       ],
@@ -53,6 +57,7 @@ class CustomDropdown extends StatefulWidget {
   final Function() onRoute1Pressed;
   final Function() onRoute2Pressed;
   final Function() onSocioPressed;
+  final Function() onSolicitudesPressed;
   final Function() onLogoutPressed;
 
   const CustomDropdown({
@@ -61,6 +66,7 @@ class CustomDropdown extends StatefulWidget {
     required this.onRoute1Pressed,
     required this.onRoute2Pressed,
     required this.onSocioPressed,
+    required this.onSolicitudesPressed,
     required this.onLogoutPressed,
   }) : super(key: key);
 
@@ -97,6 +103,16 @@ class _CustomDropdownState extends State<CustomDropdown> {
           ),
         ),
         const PopupMenuItem<String>(
+          value: 'Solicitudes Usuarios',
+          child: ListTile(
+            leading: Icon(
+              Icons.construction,
+              color: Color.fromRGBO(61, 38, 12, 1),
+            ),
+            title: Text('Solicitudes Usuarios'),
+          ),
+        ),
+        const PopupMenuItem<String>(
           value: 'Route 2',
           child: ListTile(
             leading: Icon(
@@ -107,13 +123,13 @@ class _CustomDropdownState extends State<CustomDropdown> {
           ),
         ),
         const PopupMenuItem<String>(
-          value: 'Registro Trabajador',
+          value: 'Ofrecer servicio',
           child: ListTile(
             leading: Icon(
               Icons.person_add,
               color: Color.fromRGBO(61, 38, 12, 1),
             ),
-            title: Text('Registro Trabajador'),
+            title: Text('Ofrecer servicio'),
           ),
         ),
         const PopupMenuItem<String>(
@@ -144,10 +160,12 @@ class _CustomDropdownState extends State<CustomDropdown> {
           widget.onRoute1Pressed();
         } else if (_selectedOption == 'Route 2') {
           widget.onRoute2Pressed();
-        } else if (_selectedOption == 'Registro Trabajador') {
+        } else if (_selectedOption == 'Ofrecer servicio') {
           widget.onSocioPressed();
         } else if (_selectedOption == 'Logout') {
           widget.onLogoutPressed();
+        } else if (_selectedOption == 'Solicitudes Usuarios') {
+          widget.onSolicitudesPressed();
         }
       },
       offset: Offset(0, kToolbarHeight),

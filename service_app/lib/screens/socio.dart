@@ -16,7 +16,6 @@ class _SocioScreenState extends State<SocioScreen> {
   String _token = '';
   final _formKey = GlobalKey<FormState>();
   late AuthService _authService;
-  final _emailController = TextEditingController();
   final _trabajoController = TextEditingController();
   final _descripcionController = TextEditingController();
   final dropdownController = TextEditingController();
@@ -49,13 +48,12 @@ class _SocioScreenState extends State<SocioScreen> {
       _isLoading = true;
     });
 
-    final email = _emailController.text;
     final trabajo = _trabajoController.text;
     final descripcion = _descripcionController.text;
 
     try {
       _authService
-          .registerSocio(email, trabajo, descripcion, _categoria!)
+          .registerSocio(trabajo, descripcion, _categoria!)
           .then((value) {
         if (!value['error']) {
           Navigator.pushReplacement(
@@ -96,10 +94,11 @@ class _SocioScreenState extends State<SocioScreen> {
     });
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return MyMaterialApp(
-      SingleChildScrollView( // Wrap the SocioScreen widget with SingleChildScrollView
+      SingleChildScrollView(
+        // Wrap the SocioScreen widget with SingleChildScrollView
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -108,21 +107,8 @@ class _SocioScreenState extends State<SocioScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Introduce tu email',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Introduce un email válido';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
                   controller: _trabajoController,
-                   decoration: InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Trabajo',
                     hintText: 'Introduce el trabajo que ofreces',
                   ),
@@ -176,7 +162,7 @@ class _SocioScreenState extends State<SocioScreen> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(61, 38, 12, 1),
+                        Color.fromRGBO(63, 121, 255, 1),
                       ),
                     ),
                     onPressed: () {
